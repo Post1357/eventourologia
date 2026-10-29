@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inscripción Noviembre Azul 2026 - DIRSAL PNP</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --verde-oscuro: #0A2E1F;
+            --verde-medio: #11422E;
+            --dorado: #D4AF37;
+            --dorado-hover: #F4D03F;
+            --blanco: #FFFFFF;
+            --gris-fondo: #F4F6F5;
+            --texto-oscuro: #333333;
+            --texto-gris: #666666;
+            --amarillo-input: #FFF9E6;
+            --borde-input: #CBD5E1;
+            --rojo-alerta: #DC2626;
+            --verde-exito: #16A34A;
+            --verde-barra: #22C55E;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body { 
+            font-family: 'Open Sans', sans-serif; 
+            background-color: var(--gris-fondo); 
+            color: var(--texto-oscuro); 
+            line-height: 1.6; 
+            min-height: 100vh;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        input, select, textarea { -webkit-user-select: auto; user-select: auto; }
+
+        .header-institucional {
+            background-color: var(--verde-medio);
+            background-image: 
+                linear-gradient(rgba(10, 46, 31, 0.9), rgba(10, 46, 31, 0.9)),
+                repeating-linear-gradient(0deg, transparent, transparent 39px, rgba(255,255,255,0.05) 40px),
+                repeating-linear-gradient(90deg, transparent, transparent 39px, rgba(255,255,255,0.05) 40px);
+            color: white;
+            padding: 50px 20px 80px 20px;
+            text-align: center;
+            border-bottom: 3px solid var(--dorado);
+        }
+
+        .header-institucional h1 { font-family: 'Montserrat', sans-serif; font-size: 24px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 10px; color: var(--blanco); }
+        .header-institucional p { font-size: 14px; color: var(--dorado); font-weight: 500; text-transform: uppercase; letter-spacing: 2px; }
+
+        /* --- PANEL DE DISPONIBILIDAD --- */
+        .panel-cupos {
+            background-color: white; border-radius: 12px; padding: 25px; text-align: center; margin: -40px auto 20px auto; max-width: 800px; box-shadow: 0 10px 25px rgba(0,0,0,0.08); position: relative; z-index: 20; border-top: 4px solid var(--dorado);
+        }
+        .panel-cupos h2 { font-family: 'Montserrat', sans-serif; color: var(--texto-gris); font-size: 16px; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 5px; font-weight: 600; }
+        
+        .numero-gigante { font-family: 'Montserrat', sans-serif; font-size: 65px; font-weight: 800; color: var(--verde-medio); line-height: 1; margin-bottom: 15px; transition: color 0.3s ease; }
+        .numero-gigante.pocos-cupos { color: var(--rojo-alerta); }
+        .texto-cupos { font-size: 18px; color: var(--texto-oscuro); font-weight: 600; }
+        
+        /* --- BARRAS DE PROGRESO POR FECHA --- */
+        .desglose-cupos { display: flex; justify-content: center; gap: 20px; margin-top: 20px; flex-wrap: wrap; }
+        .desglose-item { 
+            background-color: #F8FAFC; padding: 15px 20px; border-radius: 8px; border: 1px solid #E2E8F0; 
+            font-size: 14px; color: var(--texto-gris); width: 100%; max-width: 220px; text-align: left;
+        }
+        .desglose-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 8px; }
+        .desglose-fecha { font-weight: 700; color: var(--texto-oscuro); font-size: 14px; }
+        .desglose-num { font-family: 'Montserrat', sans-serif; font-size: 16px; font-weight: 800; color: var(--verde-medio); }
+        
+        .barra-fondo { background-color: #E2E8F0; border-radius: 10px; height: 12px; width: 100%; overflow: hidden; margin-bottom: 8px; }
+        .barra-progreso { background-color: var(--dorado); height: 100%; width: 0%; transition: width 0.5s ease-in-out; border-radius: 10px; }
+        
+        .desglose-hospital { font-size: 11px; color: var(--texto-gris); line-height: 1.2; margin-top: 5px; display: block; border-top: 1px dashed #CBD5E1; padding-top: 5px;}
+
+        /* Estado lleno */
+        .desglose-item.lleno .barra-progreso { background-color: var(--verde-barra); }
+        .desglose-item.lleno .desglose-num { color: var(--verde-barra); }
+        .desglose-item.lleno { border-color: var(--verde-barra); background-color: #F0FDF4; }
+
+        .contenedor-principal {
+            max-width: 900px; margin: 0 auto 40px auto; background-color: var(--blanco); border-radius: 8px; box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1); overflow: hidden;
+        }
+        
+        /* --- PANTALLA DE BIENVENIDA --- */
+        .pantalla-bienvenida { padding: 60px 40px; text-align: center; display: none; }
+        .pantalla-bienvenida.activo { display: block; animation: fadeIn 0.4s ease; }
+        .pantalla-bienvenida h1 { color: var(--verde-medio); font-family: 'Montserrat', sans-serif; font-size: 28px; font-weight: 700; margin-bottom: 15px; }
+        .pantalla-bienvenida p { color: var(--texto-gris); font-size: 16px; margin-bottom: 40px; max-width: 600px; margin-left: auto; margin-right: auto; }
+        
+        .botones-inicio { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; }
+        .btn-inicio {
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            width: 250px; padding: 30px 20px; border-radius: 12px; border: 2px solid var(--borde-input);
+            background-color: white; cursor: pointer; transition: all 0.3s ease; text-decoration: none; color: var(--texto-oscuro);
+        }
+        .btn-inicio:hover { border-color: var(--verde-medio); box-shadow: 0 10px 20px rgba(0,0,0,0.1); transform: translateY(-5px); }
+        .btn-inicio .icono { font-size: 40px; margin-bottom: 15px; }
+        .btn-inicio h3 { font-family: 'Montserrat', sans-serif; font-size: 18px; color: var(--verde-medio); }
+        .btn-inicio p { font-size: 13px; color: var(--texto-gris); margin: 0; }
+
+        /* --- SECCIÓN DEL FORMULARIO Y CONSULTA --- */
+        .contenido-form { padding: 40px; display: none; }
+        .contenido-form.activo { display: block; animation: fadeIn 0.4s ease; }
+        
+        .titulo-form { color: var(--verde-medio); font-family: 'Montserrat', sans-serif; font-size: 26px; font-weight: 700; margin-bottom: 10px; line-height: 1.2; }
+        .subtitulo { font-weight: 600; color: var(--dorado); font-size: 15px; margin-bottom: 20px; display: block; text-transform: uppercase; letter-spacing: 1px; }
+        .nota { font-size: 14px; color: var(--texto-gris); background-color: #F8FAFC; padding: 15px; border-left: 4px solid var(--dorado); border-radius: 0 4px 4px 0; margin-bottom: 30px; }
+
+        h2.seccion { color: var(--verde-oscuro); font-family: 'Montserrat', sans-serif; font-size: 18px; font-weight: 600; margin-top: 40px; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 2px solid #E2E8F0; display: flex; align-items: center; }
+        h2.seccion::before { content: ''; display: inline-block; width: 6px; height: 22px; background-color: var(--dorado); margin-right: 12px; border-radius: 2px; }
+
+        .campo-grupo { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px; align-items: start; }
+        .campo-grupo.full-width { grid-template-columns: 1fr; }
+        .campo-info { display: flex; flex-direction: column; }
+        .campo-label { font-weight: 600; color: var(--texto-oscuro); font-size: 13px; margin-bottom: 6px; }
+        .campo-label span { color: var(--rojo-alerta); }
+        .campo-ayuda { font-size: 12px; color: var(--texto-gris); margin-top: 6px; }
+
+        input[type="text"], input[type="number"], input[type="tel"], input[type="email"], select {
+            width: 100%; padding: 12px 15px; border: 1px solid var(--borde-input); border-radius: 6px; background-color: var(--amarillo-input); font-family: 'Open Sans', sans-serif; font-size: 15px; color: var(--texto-oscuro); transition: all 0.3s ease;
+        }
+        input:focus, select:focus { outline: none; border-color: var(--verde-medio); box-shadow: 0 0 0 4px rgba(17, 66, 46, 0.1); background-color: var(--blanco); }
+
+        .alerta-dni { display: none; background-color: #FEE2E2; border: 1px solid #F87171; color: #991B1B; padding: 12px; border-radius: 6px; font-weight: 600; margin-top: 10px; font-size: 13px; animation: fadeIn 0.3s ease; }
+
+        .info-lugar { display: none; background-color: #EFF6FF; border: 1px solid #BFDBFE; border-radius: 8px; padding: 15px 20px; margin-top: 10px; margin-bottom: 20px; animation: fadeIn 0.3s ease; }
+        .info-lugar h4 { color: #1E40AF; font-family: 'Montserrat', sans-serif; font-size: 15px; margin-bottom: 5px; }
+        .info-lugar p { color: #1E3A8A; font-size: 14px; margin: 0; }
+        .info-lugar strong { font-weight: 700; }
+
+        .grid-horarios { display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 10px; margin-top: 15px; }
+        .btn-hora { padding: 10px; border: 1px solid var(--borde-input); background-color: #F8FAFC; border-radius: 6px; text-align: center; cursor: pointer; font-weight: 600; font-size: 14px; color: var(--texto-oscuro); transition: all 0.2s; user-select: none; }
+        .btn-hora:hover { border-color: var(--verde-medio); background-color: #E2E8F0; }
+        .btn-hora.selected { background-color: var(--verde-medio); color: white; border-color: var(--verde-medio); box-shadow: 0 4px 6px rgba(17, 66, 46, 0.2); }
+        .btn-hora:disabled { background-color: #e5e7eb; color: #9ca3af; border-color: #e5e7eb; cursor: not-allowed; text-decoration: line-through; }
+
+        .check-conformidad { display: flex; align-items: flex-start; gap: 10px; background-color: #F8FAFC; padding: 15px; border-radius: 6px; border: 1px solid var(--borde-input); cursor: pointer; }
+        .check-conformidad input[type="checkbox"] { width: 20px; height: 20px; margin-top: 2px; cursor: pointer; accent-color: var(--verde-medio); }
+        .check-conformidad label { font-size: 14px; color: var(--texto-oscuro); cursor: pointer; font-weight: 500; }
+
+        .resumen-cita { display: none; background-color: #F0FDF4; border: 2px solid #22C55E; border-radius: 8px; padding: 30px; margin-top: 30px; text-align: center; animation: fadeIn 0.5s ease-out; }
+        .resumen-cita h3 { color: #166534; font-family: 'Montserrat', sans-serif; font-size: 24px; margin-bottom: 20px; }
+        .resumen-cita p { font-size: 16px; margin-bottom: 8px; color: #1F2937; }
+        .resumen-cita strong { color: #15803D; font-size: 18px; }
+        
+        .area-resumen { background-color: white; padding: 20px; border-radius: 8px; margin: 20px 0; border: 1px dashed #22C55E; text-align: left; }
+
+        .nota-captura {
+            background-color: #FEF3C7; border: 1px solid #F59E0B; color: #92400E; padding: 15px; border-radius: 8px; margin: 20px 0; font-weight: 600; font-size: 15px; display: flex; align-items: center; justify-content: center; gap: 10px;
+        }
+
+        .btn-accion { background-color: var(--verde-medio); color: white; padding: 12px 25px; border: none; border-radius: 6px; cursor: pointer; font-size: 15px; font-weight: 600; font-family: 'Montserrat', sans-serif; margin-top: 15px; transition: all 0.3s ease; }
+        .btn-accion:hover { background-color: var(--verde-oscuro); transform: translateY(-2px); }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        @media (max-width: 768px) {
+            .header-institucional { padding: 30px 20px 70px 20px; }
+            .header-institucional h1 { font-size: 20px; }
+            .contenido-form { padding: 25px 20px; }
+            .pantalla-bienvenida { padding: 40px 20px; }
+            .campo-grupo { grid-template-columns: 1fr; gap: 15px; }
+            .titulo-form { font-size: 22px; }
+            .numero-gigante { font-size: 50px; }
+            .desglose-cupos { flex-direction: column; gap: 10px; align-items: center; }
+            .botones-inicio { flex-direction: column; align-items: center; }
+            .btn-inicio { width: 100%; max-width: 300px; }
+        }
+    </style>
+</head>
+<body oncontextmenu="return false;">
+
+    <div class="header-institucional">
+        <h1>DEPARTAMENTO DE UROLOGIA DEL HN PNP LNS.</h1>
+        <p>Campaña Noviembre Azul 2026 · DIRSAL PNP</p>
+    </div>
+
+    <div class="panel-cupos" id="panelCupos">
+        <h2>Disponibilidad de la Campaña</h2>
+        <div class="numero-gigante" id="contadorGlobal">...</div>
+        <div class="texto-cupos" id="textoCuposGlobal">Cargando cupos...</div>
+        <div class="desglose-cupos" id="desgloseFechas"></div>
+    </div>
+        
+    <div class="contenedor-principal">
+        
+        <!-- PANTALLA 1: BIENVENIDA -->
+        <div id="pantallaBienvenida" class="pantalla-bienvenida activo">
+            <h1>Bienvenido a la Campaña</h1>
+            <p>Por favor, seleccione una opción para continuar. Si ya se inscribió, puede consultar los detalles de su cita.</p>
+            
+            <div class="botones-inicio">
+                <div class="btn-inicio" onclick="mostrarFormulario()">
+                    <div class="icono">📝</div>
+                    <h3>Registrarme al Evento</h3>
+                    <p>Inscríbete para una evaluación médica</p>
+                </div>
+                
+                <div class="btn-inicio" onclick="mostrarConsulta()">
+                    <div class="icono">🔍</div>
+                    <h3>Consultar mi Cita</h3>
+                    <p>Verifica tu horario y lugar</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- PANTALLA 2: FORMULARIO -->
+        <div id="seccionFormulario" class="contenido-form">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                <h1 class="titulo-form">Solicitud de Evaluación Médica</h1>
+                <button onclick="volverInicio()" style="background: none; border: none; color: var(--texto-gris); cursor: pointer; font-size: 14px; text-decoration: underline;">Volver al inicio</button>
+            </div>
+            <span class="subtitulo">Registro de Cita</span>
+            <div class="nota">
+                <strong>Complete los campos obligatorios (*).</strong> Un formulario por persona (DNI único).
+            </div>
+
+            <form id="formCampana">
+                <h2 class="seccion">Datos de identificación y contacto</h2>
+                
+                <div class="campo-grupo full-width">
+                    <div class="campo-info">
+                        <label class="campo-label">Apellidos y nombres <span>*</span></label>
+                        <input type="text" id="nombre" placeholder="Escriba sus datos completos" required>
+                    </div>
+                </div>
+
+                <div class="campo-grupo">
+                    <div class="campo-info">
+                        <label class="campo-label">Tipo de documento <span>*</span></label>
+                        <select id="tipo_doc" required onchange="ajustarDocumento()">
+                            <option value="" disabled selected>Seleccione una opción</option>
+                            <option value="DNI">DNI</option>
+                            <option value="CARNET DE EXTRANJERIA">CARNET DE EXTRANJERIA</option>
+                            <option value="OTRO">OTRO</option>
+                        </select>
+                    </div>
+                    <div class="campo-info">
+                        <label class="campo-label">Número de documento <span>*</span></label>
+                        <input type="text" id="num_doc" placeholder="Ingrese su número" required oninput="validarSoloNumeros(this)" onblur="validarDniExistente()">
+                        <span class="campo-ayuda">Ingrese como texto, conservando ceros iniciales.</span>
+                        <div id="alertaDni" class="alerta-dni">
+                            ⚠️ Usted ya se encuentra registrado en esta campaña. Solo se permite un registro por persona.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="campo-grupo">
+                    <div class="campo-info">
+                        <label class="campo-label">Edad cumplida en años <span>*</span></label>
+                        <input type="number" id="edad" placeholder="Ej. 45" required min="18" max="100">
+                    </div>
+                    <div class="campo-info">
+                        <label class="campo-label">Teléfono celular <span>*</span></label>
+                        <input type="text" id="telefono" placeholder="999888777" required maxlength="9" oninput="validarSoloNumeros(this)">
+                    </div>
+                </div>
+
+                <div class="campo-grupo">
+                    <div class="campo-info">
+                        <label class="campo-label">Vínculo con la familia policial <span>*</span></label>
+                        <select id="vinculo" required>
+                            <option value="" disabled selected>Seleccione una opción</option>
+                            <option value="Personal PNP">Personal PNP</option>
+                            <option value="Familiar Derechohabiente">Familiar Derechohabiente</option>
+                            <option value="Otro">Otro</option>
+                        </select>
+                    </div>
+                    <div class="campo-info">
+                        <label class="campo-label">Situación del personal PNP</label>
+                        <select id="situacion">
+                            <option value="">-- Seleccione --</option>
+                            <option value="Actividad">Actividad</option>
+                            <option value="Disponibilidad">Disponibilidad</option>
+                            <option value="Retiro">Retiro</option>
+                            <option value="No Corresponde">No Corresponde</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="campo-grupo full-width">
+                    <div class="campo-info">
+                        <label class="campo-label">Correo electrónico</label>
+                        <input type="email" id="correo" placeholder="ejemplo@correo.com">
+                        <span class="campo-ayuda">Opcional. Verifique la dirección.</span>
+                    </div>
+                </div>
+
+                <h2 class="seccion">Selección de Fecha y Horario</h2>
+                
+                <div class="campo-grupo">
+                    <div class="campo-info">
+                        <label class="campo-label">Día de la campaña <span>*</span></label>
+                        <select id="fecha_eval" required onchange="actualizarTurnos()">
+                            <option value="" disabled selected>Seleccione el día</option>
+                            <option value="2026-11-14">14/11/2026 (100 cupos)</option>
+                            <option value="2026-11-21">21/11/2026 (50 cupos)</option>
+                            <option value="2026-11-28">28/11/2026 (50 cupos)</option>
+                        </select>
+                    </div>
+                    <div class="campo-info">
+                        <label class="campo-label">Turno <span>*</span></label>
+                        <select id="turno_eval" required onchange="cargarHorarios()">
+                            <option value="" disabled selected>Seleccione el turno</option>
+                            <option value="Mañana">Mañana (8:00 am - 1:00 pm)</option>
+                            <option value="Tarde">Tarde (1:00 pm - 6:00 pm)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div id="infoLugar" class="info-lugar">
+                    <h4 id="lugarNombre"></h4>
+                    <p><strong>Dirección:</strong> <span id="lugarDireccion"></span></p>
+                </div>
+
+                <div class="campo-info" style="margin-top: 10px;">
+                    <label class="campo-label">Horarios disponibles <span>*</span></label>
+                    <span class="campo-ayuda" style="margin-bottom: 10px;">Haga clic en una hora para seleccionarla. Si no ve horas, el turno está lleno.</span>
+                    <div id="contenedorHorarios" class="grid-horarios"></div>
+                </div>
+
+                <h2 class="seccion">Conformidad</h2>
+                
+                <div class="campo-grupo full-width">
+                    <div class="check-conformidad">
+                        <input type="checkbox" id="conformidad" required>
+                        <label for="conformidad">Declaro que los datos son correctos y autorizo su uso para gestionar esta solicitud y contactarme sobre la campaña. <span style="color: var(--rojo-alerta);">*</span></label>
+                    </div>
+                </div>
+
+                <button type="submit" id="btnEnviar" class="btn-accion" style="width: 100%; background-color: var(--dorado); color: var(--verde-oscuro); padding: 15px;">Confirmar Inscripción</button>
+            </form>
+        </div>
+
+        <!-- PANTALLA 3: CONSULTA DE CITA -->
+        <div id="seccionConsulta" class="contenido-form">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                <h1 class="titulo-form">Consultar mi Cita</h1>
+                <button onclick="volverInicio()" style="background: none; border: none; color: var(--texto-gris); cursor: pointer; font-size: 14px; text-decoration: underline;">Volver al inicio</button>
+            </div>
+            <span class="subtitulo">Verificación de Registro</span>
+            <p>Ingrese su número de documento y teléfono celular para buscar su cita programada.</p>
+
+            <div class="campo-grupo full-width" style="margin-top: 30px;">
+                <div class="campo-info">
+                    <label class="campo-label">Número de documento <span>*</span></label>
+                    <input type="text" id="consulta_dni" placeholder="Ingrese su DNI" required oninput="validarSoloNumeros(this)">
+                </div>
+            </div>
+            <div class="campo-grupo full-width">
+                <div class="campo-info">
+                    <label class="campo-label">Teléfono celular <span>*</span></label>
+                    <input type="text" id="consulta_telefono" placeholder="Ingrese su celular" required maxlength="9" oninput="validarSoloNumeros(this)">
+                </div>
+            </div>
+
+            <button onclick="buscarCita()" class="btn-accion" style="width: 100%;">Buscar Cita</button>
+            
+            <div id="mensajeConsulta" style="margin-top: 20px; font-weight: 600; padding: 15px; border-radius: 6px; text-align: center; display: none; font-size: 14px;"></div>
+        </div>
+
+        <!-- PANTALLA 4: RESULTADO / RESUMEN DE CITA -->
+        <div id="resumenCita" class="contenido-form">
+            <div class="resumen-cita" style="display: block; margin-top: 0;">
+                <h3>✅ ¡Cita Confirmada!</h3>
+                
+                <div id="areaResumen" class="area-resumen">
+                    <div style="text-align: center; margin-bottom: 20px;">
+                        <h2 style="font-family: 'Montserrat'; color: var(--verde-medio); font-size: 18px; margin-bottom: 5px;">DEPARTAMENTO DE UROLOGÍA</h2>
+                        <p style="font-size: 12px; color: var(--texto-gris);">Campaña Noviembre Azul 2026 - DIRSAL PNP</p>
+                    </div>
+                    
+                    <p style="text-align: left;">Paciente: <strong id="resNombre"></strong></p>
+                    <p style="text-align: left;">Documento: <strong id="resDni"></strong></p>
+                    <hr style="border: 0; border-top: 1px solid #E5E7EB; margin: 15px 0;">
+                    <p style="text-align: left;">Fecha de Cita: <strong id="resFecha"></strong></p>
+                    <p style="text-align: left;">Turno: <strong id="resTurno"></strong></p>
+                    <p style="text-align: left;">Hora exacta: <strong id="resHora"></strong></p>
+                    <p style="text-align: left;">Consultorio asignado: <strong id="resConsultorio"></strong></p>
+                    
+                    <div style="background-color: #DCFCE7; padding: 15px; border-radius: 6px; margin: 15px 0; border: 1px solid #86EFAC; text-align: left;">
+                        <p style="margin: 0; font-size: 12px; color: #166534; font-weight: 600;">Lugar de atención:</p>
+                        <p style="margin: 5px 0 0 0; font-size: 14px; color: #14532D;"><strong id="resLugarNombre"></strong></p>
+                        <p style="margin: 2px 0 0 0; font-size: 12px; color: #14532D;"><span id="resLugarDireccion"></span></p>
+                    </div>
+                    
+                    <p style="font-size: 12px; color: #6B7280; text-align: center; margin-top: 20px;">Por favor, llegue 10 minutos antes con su DNI original.</p>
+                </div>
+
+                <div class="nota-captura">
+                    📸 Tome una captura de pantalla de este turno asignado para presentarlo el día de su atención.
+                </div>
+                
+                <div style="margin-top: 20px;">
+                    <button onclick="volverInicio()" class="btn-accion" style="background-color: #6B7280;">Volver al Inicio</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // --- BLOQUEO DE CÓDIGO FUENTE ---
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'F12' || e.keyCode === 123) { e.preventDefault(); return false; }
+            if (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J' || e.key === 'C' || e.keyCode === 73 || e.keyCode === 74 || e.keyCode === 67)) { e.preventDefault(); return false; }
+            if (e.ctrlKey && (e.key === 'U' || e.keyCode === 85)) { e.preventDefault(); return false; }
+        });
+
+        const SUPABASE_URL = 'https://kbtgxssmeyepedihlnwp.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtidGd4c3NtZXllcGVkaWhsbndwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTMyOTAwODMsImV4cCI6MjEwODg2NjA4M30.rkTPRGTZISdKBrTTvg11Rlq32fPDdiZTbdoMpNWLpmk';
+        
+        const { createClient } = supabase;
+        const _supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        let horaSeleccionada = null;
+        let consultorioSeleccionado = null;
+        let cuposOcupadosGlobal = []; 
+        let dniDuplicado = false;
+
+        const LUGARES = {
+            '2026-11-14': { nombre: 'Consultorios de Tópico de Urología HN PNP LNS (Hospital Histórico)', direccion: 'Av. Brasil Cdra. 26 s/n, Jesús María, Lima', corto: 'Tópico Urología HN PNP' },
+            '2026-11-21': { nombre: 'Hospital Geriátrico PNP "San José"', direccion: 'Jirón Mariscal Ramón Castilla 590, San Miguel, Lima', corto: 'Hospital Geriátrico "San José"' },
+            '2026-11-28': { nombre: 'Policlínico Policial "Walter Rosales León"', direccion: 'Calle Los Ruiseñores S/N - Complejo PNP Aramburú, Surquillo, Lima', corto: 'Policlínico "Walter Rosales León"' }
+        };
+
+        const CONFIG_HORARIOS = {
+            'Mañana': { inicio: 8 * 60, fin: 13 * 60 },
+            'Tarde': { inicio: 13 * 60, fin: 18 * 60 }
+        };
+
+        const CUPOS_TOTALES = {
+            '2026-11-14': 100,
+            '2026-11-21': 50,
+            '2026-11-28': 50
+        };
+
+        function ocultarTodo() {
+            document.getElementById('pantallaBienvenida').classList.remove('activo');
+            document.getElementById('seccionFormulario').classList.remove('activo');
+            document.getElementById('seccionConsulta').classList.remove('activo');
+            document.getElementById('resumenCita').classList.remove('activo');
+        }
+
+        function volverInicio() {
+            ocultarTodo();
+            document.getElementById('pantallaBienvenida').classList.add('activo');
+            document.getElementById('formCampana').reset();
+            document.getElementById('alertaDni').style.display = 'none';
+            document.getElementById('contenedorHorarios').innerHTML = '';
+            document.getElementById('infoLugar').style.display = 'none';
+            document.getElementById('mensajeConsulta').style.display = 'none';
+            dniDuplicado = false;
+            actualizarContadores();
+        }
+
+        function mostrarFormulario() { ocultarTodo(); document.getElementById('seccionFormulario').classList.add('activo'); }
+        function mostrarConsulta() { ocultarTodo(); document.getElementById('seccionConsulta').classList.add('activo'); }
+
+        // --- LÓGICA DE CONTADORES Y BARRAS ---
+        async function actualizarContadores() {
+            // Forzamos una lectura limpia trayendo solo los datos necesarios
+            const { data, error } = await _supabase.from('solicitudes_evaluacion_medica').select('fecha_evaluacion_solicitada');
+            
+            if (error) { 
+                console.error("Error al leer cupos:", error); 
+                return; 
+            }
+
+            let totalOcupados = data.length;
+            let disponiblesGlobal = 200 - totalOcupados;
+
+            // 1. Contador Global
+            const contadorEl = document.getElementById('contadorGlobal');
+            const textoEl = document.getElementById('textoCuposGlobal');
+            contadorEl.textContent = disponiblesGlobal;
+            
+            if (disponiblesGlobal <= 20) {
+                contadorEl.classList.add('pocos-cupos');
+                textoEl.textContent = "¡Últimos cupones disponibles!";
+            } else {
+                contadorEl.classList.remove('pocos-cupos');
+                textoEl.textContent = "Cupones disponibles para este evento";
+            }
+
+            // 2. Barras por Fecha
+            const desgloseEl = document.getElementById('desgloseFechas');
+            desgloseEl.innerHTML = '';
+
+            for (const [fecha, max] of Object.entries(CUPOS_TOTALES)) {
+                // Convertimos ambos a String y quitamos espacios para asegurar la comparación perfecta
+                const ocupadosFecha = data.filter(d => String(d.fecha_evaluacion_solicitada).trim() === fecha).length;
+                const disponiblesFecha = max - ocupadosFecha;
+                
+                // Calculamos el porcentaje de llenado
+                const porcentaje = (ocupadosFecha / max) * 100;
+                const estaLleno = ocupadosFecha >= max;
+                
+                const fechaFormateada = fecha.split('-').reverse().join('/');
+                const hospitalCorto = LUGARES[fecha] ? LUGARES[fecha].corto : '';
+
+                desgloseEl.innerHTML += `
+                    <div class="desglose-item ${estaLleno ? 'lleno' : ''}">
+                        <div class="desglose-header">
+                            <span class="desglose-fecha">${fechaFormateada}</span>
+                            <span class="desglose-num">${disponiblesFecha} <span style="font-size:11px; font-weight:normal;">/ ${max}</span></span>
+                        </div>
+                        <div class="barra-fondo">
+                            <div class="barra-progreso" style="width: ${porcentaje}%;"></div>
+                        </div>
+                        <span class="desglose-hospital">
+                            ${estaLleno ? '<strong>¡CUPO LLENO!</strong><br>' : ''}
+                            ${hospitalCorto}
+                        </span>
+                    </div>
+                `;
+            }
+        }
+
+        actualizarContadores();
+
+        function validarSoloNumeros(input) { input.value = input.value.replace(/[^0-9]/g, ''); }
+
+        function ajustarDocumento() {
+            const tipoDoc = document.getElementById('tipo_doc').value;
+            const inputDoc = document.getElementById('num_doc');
+            inputDoc.maxLength = tipoDoc === 'DNI' ? 8 : 12;
+            inputDoc.value = ""; 
+            document.getElementById('alertaDni').style.display = 'none';
+            dniDuplicado = false;
+        }
+
+        async function validarDniExistente() {
+            const tipoDoc = document.getElementById('tipo_doc').value;
+            const numDoc = document.getElementById('num_doc').value.trim();
+            const alerta = document.getElementById('alertaDni');
+
+            if (tipoDoc === 'DNI' && numDoc.length === 8) {
+                const { data } = await _supabase.from('solicitudes_evaluacion_medica').select('id').eq('numero_documento', numDoc).maybeSingle();
+                if (data) { alerta.style.display = 'block'; dniDuplicado = true; } 
+                else { alerta.style.display = 'none'; dniDuplicado = false; }
+            } else { alerta.style.display = 'none'; dniDuplicado = false; }
+        }
+
+        function actualizarTurnos() {
+            const fecha = document.getElementById('fecha_eval').value;
+            document.getElementById('turno_eval').value = "";
+            document.getElementById('contenedorHorarios').innerHTML = '';
+            horaSeleccionada = null;
+            consultorioSeleccionado = null;
+
+            const infoLugar = document.getElementById('infoLugar');
+            if (fecha && LUGARES[fecha]) {
+                document.getElementById('lugarNombre').textContent = LUGARES[fecha].nombre;
+                document.getElementById('lugarDireccion').textContent = LUGARES[fecha].direccion;
+                infoLugar.style.display = 'block';
+            } else { infoLugar.style.display = 'none'; }
+        }
+
+        async function cargarHorarios() {
+            const fecha = document.getElementById('fecha_eval').value;
+            const turno = document.getElementById('turno_eval').value;
+            const contenedor = document.getElementById('contenedorHorarios');
+            
+            contenedor.innerHTML = '<p style="grid-column: 1/-1; color: #666;">Cargando disponibilidad...</p>';
+            horaSeleccionada = null;
+            consultorioSeleccionado = null;
+
+            let consultoriosCount = (fecha === '2026-11-14') ? 4 : 2;
+            if (fecha !== '2026-11-14' && turno === 'Tarde') {
+                contenedor.innerHTML = '<p style="grid-column: 1/-1; color: #DC2626; font-weight: bold;">El turno Tarde no está disponible para esta fecha.</p>';
+                return;
+            }
+
+            const { data, error } = await _supabase.from('solicitudes_evaluacion_medica').select('hora_asignada, consultorio').eq('fecha_evaluacion_solicitada', fecha).eq('turno', turno);
+            if (error) { contenedor.innerHTML = '<p style="color:red;">Error al cargar horarios.</p>'; return; }
+
+            cuposOcupadosGlobal = data;
+            const minutosTotales = CONFIG_HORARIOS[turno].fin - CONFIG_HORARIOS[turno].inicio;
+            const intervaloMinutos = Math.floor(minutosTotales / 25);
+            contenedor.innerHTML = '';
+
+            for (let i = 0; i < 25; i++) {
+                let mins = CONFIG_HORARIOS[turno].inicio + (i * intervaloMinutos);
+                let h = Math.floor(mins / 60);
+                let m = mins % 60;
+                let horaStr = `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}`;
+                let horaAmPm = `${h > 12 ? h - 12 : h}:${m.toString().padStart(2, '0')} ${h >= 12 ? 'PM' : 'AM'}`;
+                let ocupadosEnEstaHora = cuposOcupadosGlobal.filter(c => c.hora_asignada === horaStr);
+                let lleno = ocupadosEnEstaHora.length >= consultoriosCount;
+
+                let btn = document.createElement('div');
+                btn.className = 'btn-hora';
+                btn.textContent = horaAmPm;
+                
+                if (lleno) { btn.disabled = true; } 
+                else { btn.onclick = () => seleccionarHora(btn, horaStr, ocupadosEnEstaHora, consultoriosCount); }
+                contenedor.appendChild(btn);
+            }
+        }
+
+        function seleccionarHora(btnElement, horaStr, ocupados, maxConsultorios) {
+            document.querySelectorAll('.btn-hora').forEach(b => b.classList.remove('selected'));
+            btnElement.classList.add('selected');
+            horaSeleccionada = horaStr;
+            for (let i = 1; i <= maxConsultorios; i++) {
+                let consultorioTest = `Consultorio ${i}`;
+                if (!ocupados.some(o => o.consultorio === consultorioTest)) {
+                    consultorioSeleccionado = consultorioTest;
+                    break;
+                }
+            }
+        }
+
+        document.getElementById('formCampana').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            if (dniDuplicado) { alert("Por favor, corrija el número de documento. Ya se encuentra registrado."); return; }
+            if (!horaSeleccionada || !consultorioSeleccionado) { alert("Por favor, seleccione una hora de la lista."); return; }
+
+            const btn = document.getElementById('btnEnviar');
+            btn.disabled = true;
+            btn.textContent = 'Procesando...';
+
+            const nuevaSolicitud = {
+                apellidos_nombres: document.getElementById('nombre').value.trim(),
+                tipo_documento: document.getElementById('tipo_doc').value,
+                numero_documento: document.getElementById('num_doc').value.trim(),
+                edad: parseInt(document.getElementById('edad').value),
+                vinculo_familia_policial: document.getElementById('vinculo').value,
+                situacion_personal_pnp: document.getElementById('situacion').value || null,
+                telefono_celular: document.getElementById('telefono').value.trim(),
+                correo_electronico: document.getElementById('correo').value.trim() || null,
+                fecha_evaluacion_solicitada: document.getElementById('fecha_eval').value,
+                turno: document.getElementById('turno_eval').value,
+                hora_asignada: horaSeleccionada,
+                consultorio: consultorioSeleccionado,
+                conformidad: document.getElementById('conformidad').checked
+            };
+
+            const { error } = await _supabase.from('solicitudes_evaluacion_medica').insert([nuevaSolicitud], { returning: 'minimal' });
+
+            if (error) {
+                console.error(error);
+                alert(error.code === '23505' ? '⚠️ Usted ya se encuentra registrado (DNI duplicado).' : 'Error al guardar: ' + error.message);
+                btn.disabled = false;
+                btn.textContent = 'Confirmar Inscripción';
+            } else {
+                mostrarResumen(nuevaSolicitud);
+                actualizarContadores();
+            }
+        });
+
+        async function buscarCita() {
+            const dni = document.getElementById('consulta_dni').value.trim();
+            const telefono = document.getElementById('consulta_telefono').value.trim();
+            const mensajeDiv = document.getElementById('mensajeConsulta');
+
+            if (!dni || !telefono) { alert("Por favor, ingrese su DNI y teléfono celular."); return; }
+
+            const { data, error } = await _supabase.from('solicitudes_evaluacion_medica').select('*').eq('numero_documento', dni).eq('telefono_celular', telefono).maybeSingle();
+
+            if (error) {
+                mensajeDiv.style.display = 'block'; mensajeDiv.className = 'error'; mensajeDiv.textContent = 'Error al buscar: ' + error.message;
+            } else if (!data) {
+                mensajeDiv.style.display = 'block'; mensajeDiv.className = 'error'; mensajeDiv.textContent = '⚠️ No se encontró ninguna cita con los datos proporcionados.';
+            } else {
+                mensajeDiv.style.display = 'none';
+                mostrarResumen(data);
+            }
+        }
+
+        function mostrarResumen(datos) {
+            ocultarTodo();
+            document.getElementById('resumenCita').classList.add('activo');
+
+            document.getElementById('resNombre').textContent = datos.apellidos_nombres;
+            document.getElementById('resDni').textContent = datos.numero_documento;
+            document.getElementById('resFecha').textContent = datos.fecha_evaluacion_solicitada.split('-').reverse().join('/');
+            document.getElementById('resTurno').textContent = datos.turno;
+            document.getElementById('resHora').textContent = datos.hora_asignada;
+            document.getElementById('resConsultorio').textContent = datos.consultorio;
+
+            const lugarData = LUGARES[datos.fecha_evaluacion_solicitada];
+            document.getElementById('resLugarNombre').textContent = lugarData.nombre;
+            document.getElementById('resLugarDireccion').textContent = lugarData.direccion;
+        }
+    </script>
+</body>
+</html>
