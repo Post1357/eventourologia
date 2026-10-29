@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel Administrativo - DIRSAL PNP</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --verde-oscuro: #0A2E1F;
+            --verde-medio: #11422E;
+            --dorado: #D4AF37;
+            --gris-fondo: #F4F6F5;
+            --blanco: #FFFFFF;
+            --texto-oscuro: #333333;
+            --borde: #E2E8F0;
+            --rojo: #DC2626;
+            --rojo-hover: #B91C1C;
+        }
+        
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        body { 
+            font-family: 'Open Sans', sans-serif; 
+            background-color: var(--gris-fondo); 
+            color: var(--texto-oscuro); 
+            padding: 20px; 
+            min-height: 100vh; 
+        }
+        
+        /* --- LOGIN --- */
+        .login-box { 
+            max-width: 400px; 
+            margin: 10vh auto; 
+            text-align: center; 
+            background: white; 
+            padding: 40px; 
+            border-radius: 8px; 
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1); 
+            border-top: 5px solid var(--dorado); 
+            animation: fadeIn 0.5s ease-out;
+        }
+        .login-box h2 { font-family: 'Montserrat', sans-serif; color: var(--verde-oscuro); margin-bottom: 10px; font-weight: 700; }
+        .login-box p { color: #6B7280; font-size: 14px; margin-bottom: 25px; }
+        
+        input { 
+            width: 100%; 
+            padding: 12px 15px; 
+            margin-bottom: 15px; 
+            border: 1px solid var(--borde); 
+            border-radius: 6px; 
+            font-family: 'Open Sans', sans-serif; 
+            font-size: 15px; 
+            transition: border-color 0.3s; 
+        }
+        input:focus { outline: none; border-color: var(--verde-medio); box-shadow: 0 0 0 3px rgba(17, 66, 46, 0.1); }
+        
+        /* --- PANEL PRINCIPAL --- */
+        .contenedor { 
+            max-width: 1400px; 
+            margin: auto; 
+            background: white; 
+            padding: 30px; 
+            border-radius: 8px; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08); 
+            border-top: 5px solid var(--verde-oscuro); 
+        }
+        
+        h1 { font-family: 'Montserrat', sans-serif; color: var(--verde-oscuro); font-size: 24px; font-weight: 700; }
+        
+        .header-panel { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            margin-bottom: 25px; 
+            border-bottom: 2px solid var(--borde); 
+            padding-bottom: 20px; 
+            flex-wrap: wrap; 
+            gap: 15px; 
+        }
+        
+        .filtros { margin-bottom: 20px; display: flex; gap: 15px; flex-wrap: wrap; align-items: center; }
+
+        /* --- BUSCADOR DNI --- */
+        .buscador-dni {
+            display: flex;
+            gap: 10px;
+            background-color: #F8FAFC;
+            padding: 10px 15px;
+            border-radius: 8px;
+            border: 1px solid var(--borde);
+            margin-left: auto;
+        }
+        .buscador-dni input {
+            margin-bottom: 0;
+            width: 200px;
+            padding: 8px 12px;
+        }
+        .buscador-dni button {
+            padding: 8px 15px;
+            background-color: var(--verde-medio);
+            white-space: nowrap;
+        }
+        
+        button { 
+            padding: 10px 20px; 
+            background: var(--verde-medio); 
+            color: white; 
+            border: none; 
+            cursor: pointer; 
+            border-radius: 6px; 
+            font-size: 14px; 
+            font-weight: 600; 
+            transition: background 0.3s; 
+            font-family: 'Open Sans', sans-serif;
+        }
+        button:hover { background: var(--verde-oscuro); }
+        
+        .btn-eliminar { background-color: var(--rojo); padding: 6px 12px; font-size: 12px; border-radius: 4px; }
+        .btn-eliminar:hover { background-color: var(--rojo-hover); }
+        .btn-peligro { background-color: #991B1B; }
+        .btn-peligro:hover { background-color: #7F1D1D; }
+        .btn-exito { background-color: #059669; }
+        .btn-exito:hover { background-color: #047857; }
+        .btn-pdf { background-color: var(--dorado); color: var(--verde-oscuro); }
+        .btn-pdf:hover { background-color: #F4D03F; }
+
+        /* --- TABLA --- */
+        .tabla-wrapper { overflow-x: auto; border-radius: 6px; border: 1px solid var(--borde); }
+        table { width: 100%; border-collapse: collapse; font-size: 13px; text-align: left; min-width: 1300px; }
+        th { background-color: var(--verde-medio); color: white; padding: 15px 10px; font-weight: 600; white-space: nowrap; border-bottom: 2px solid var(--dorado); }
+        td { padding: 12px 10px; border-bottom: 1px solid var(--borde); color: #4B5563; vertical-align: middle; }
+        tr:nth-child(even) { background-color: #F8FAFC; }
+        tr:hover { background-color: #F1F5F9; }
+        
+        .oculto { display: none; }
+        #loginError { color: var(--rojo); font-size: 14px; margin-top: 10px; font-weight: 600; }
+
+        /* --- MODAL DE BÚSQUEDA --- */
+        .modal-fondo {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 1000; justify-content: center; align-items: center; backdrop-filter: blur(4px);
+        }
+        .modal-contenido {
+            background: white; padding: 30px; border-radius: 12px; max-width: 400px; width: 90%; text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.2); animation: fadeIn 0.3s ease; position: relative;
+        }
+        .modal-contenido h3 { font-family: 'Montserrat', sans-serif; color: var(--verde-medio); font-size: 20px; margin-bottom: 20px; border-bottom: 2px solid var(--dorado); padding-bottom: 10px; }
+        .modal-datos { text-align: left; font-size: 15px; line-height: 1.8; margin-bottom: 20px; background-color: #F8FAFC; padding: 15px; border-radius: 8px; }
+        .modal-datos strong { color: var(--verde-oscuro); }
+        .cerrar-modal { position: absolute; top: 15px; right: 20px; font-size: 24px; cursor: pointer; color: #999; font-weight: bold; }
+        .cerrar-modal:hover { color: var(--rojo); }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body>
+
+    <!-- Pantalla de Login -->
+    <div id="loginSection" class="login-box">
+        <h2>Acceso Administrativo</h2>
+        <p>Departamento de Urología · HN PNP LNS</p>
+        <input type="email" id="adminEmail" placeholder="Correo electrónico">
+        <input type="password" id="adminPass" placeholder="Contraseña">
+        <button onclick="iniciarSesion()" style="width: 100%; padding: 12px; background: var(--dorado); color: var(--verde-oscuro); font-weight: 700;">Ingresar al Panel</button>
+        <p id="loginError"></p>
+    </div>
+
+    <!-- Panel de Administración -->
+    <div id="panelSection" class="contenedor oculto">
+        <div class="header-panel">
+            <h1>Registros de la Campaña</h1>
+            <button onclick="cerrarSesion()" style="background:#DC2626;">Cerrar Sesión</button>
+        </div>
+        
+        <div class="filtros">
+            <button onclick="cargarDatos()">🔄 Actualizar Lista</button>
+            <button onclick="exportarCSV()" class="btn-exito">📥 Exportar a Excel</button>
+            <button onclick="generarReportePDF()" class="btn-pdf">📄 Reporte PDF</button>
+            <button onclick="borrarTodo()" class="btn-peligro">🗑️ Borrar TODOS</button>
+
+            <!-- BUSCADOR DNI -->
+            <div class="buscador-dni">
+                <input type="text" id="buscarDni" placeholder="Buscar DNI..." oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+                <button onclick="buscarPaciente()">🔍 Buscar</button>
+            </div>
+        </div>
+
+        <p style="margin-bottom: 15px;"><strong>Total de registros:</strong> <span id="totalRegistros" style="color: var(--dorado); font-weight: 700; font-size: 16px;">0</span></p>
+
+        <div class="tabla-wrapper">
+            <table id="tablaRegistros">
+                <thead>
+                    <tr>
+                        <th>Fecha Reg.</th>
+                        <th>Paciente</th>
+                        <th>DNI</th>
+                        <th>Celular</th>
+                        <th>Vínculo</th>
+                        <th>Fecha Cita</th>
+                        <th>Turno</th>
+                        <th>Hora</th>
+                        <th>Consultorio</th>
+                        <th>Lugar de Atención</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="cuerpoTabla"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Modal de Búsqueda -->
+    <div id="modalBusqueda" class="modal-fondo">
+        <div class="modal-contenido">
+            <span class="cerrar-modal" onclick="cerrarModal()">&times;</span>
+            <h3>Datos del Paciente</h3>
+            <div class="modal-datos" id="contenidoModal">
+                <!-- Datos inyectados por JS -->
+            </div>
+            <button onclick="cerrarModal()" style="width: 100%;">Cerrar</button>
+        </div>
+    </div>
+
+    <script>
+        const SUPABASE_URL = 'https://kbtgxssmeyepedihlnwp.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtidGd4c3NtZXllcGVkaWhsbndwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTMyOTAwODMsImV4cCI6MjEwODg2NjA4M30.rkTPRGTZISdKBrTTvg11Rlq32fPDdiZTbdoMpNWLpmk';
+        
+        const { createClient } = supabase;
+        const _supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        
+        let datosGlobales = []; 
+
+        const LUGARES = {
+            '2026-11-14': 'Tópico de Urología HN PNP LNS (Hospital Histórico)',
+            '2026-11-21': 'Hospital Geriátrico PNP "San José"',
+            '2026-11-28': 'Policlínico Policial "Walter Rosales León"'
+        };
+
+        async function iniciarSesion() {
+            const email = document.getElementById('adminEmail').value;
+            const password = document.getElementById('adminPass').value;
+            const errorP = document.getElementById('loginError');
+
+            const { error } = await _supabase.auth.signInWithPassword({ email, password });
+            if (error) {
+                errorP.textContent = "Credenciales incorrectas o usuario no confirmado.";
+            } else {
+                errorP.textContent = "";
+                document.getElementById('loginSection').classList.add('oculto');
+                document.getElementById('panelSection').classList.remove('oculto');
+                cargarDatos();
+            }
+        }
+
+        async function cerrarSesion() {
+            await _supabase.auth.signOut();
+            document.getElementById('loginSection').classList.remove('oculto');
+            document.getElementById('panelSection').classList.add('oculto');
+        }
+
+        async function cargarDatos() {
+            const { data, error } = await _supabase
+                .from('solicitudes_evaluacion_medica')
+                .select('*')
+                .order('fecha_evaluacion_solicitada', { ascending: true })
+                .order('turno', { ascending: true })
+                .order('hora_asignada', { ascending: true });
+
+            if (error) { alert("Error: " + error.message); return; }
+
+            datosGlobales = data;
+            document.getElementById('totalRegistros').textContent = data.length;
+            const tbody = document.getElementById('cuerpoTabla');
+            tbody.innerHTML = '';
+
+            data.forEach(reg => {
+                const fechaCita = reg.fecha_evaluacion_solicitada.split('-').reverse().join('/'); 
+                const lugarAtencion = LUGARES[reg.fecha_evaluacion_solicitada] || 'No definido';
+
+                tbody.innerHTML += `
+                    <tr id="fila-${reg.id}">
+                        <td>${new Date(reg.created_at).toLocaleDateString('es-PE')}</td>
+                        <td><strong>${reg.apellidos_nombres}</strong></td>
+                        <td>${reg.numero_documento}</td>
+                        <td>${reg.telefono_celular}</td>
+                        <td>${reg.vinculo_familia_policial}</td>
+                        <td><strong>${fechaCita}</strong></td>
+                        <td>${reg.turno || '-'}</td>
+                        <td>${reg.hora_asignada || '-'}</td>
+                        <td>${reg.consultorio || '-'}</td>
+                        <td>${lugarAtencion}</td>
+                        <td>
+                            <button class="btn-eliminar" onclick="eliminarRegistro(${reg.id}, '${reg.apellidos_nombres}')">Eliminar</button>
+                        </td>
+                    </tr>
+                `;
+            });
+        }
+
+        // --- BUSCADOR DE PACIENTE (MODAL) ---
+        async function buscarPaciente() {
+            const dni = document.getElementById('buscarDni').value.trim();
+            if (!dni) { alert("Por favor, ingrese un DNI para buscar."); return; }
+
+            const { data, error } = await _supabase
+                .from('solicitudes_evaluacion_medica')
+                .select('*')
+                .eq('numero_documento', dni)
+                .maybeSingle();
+
+            if (error) { alert("Error al buscar: " + error.message); return; }
+            
+            if (!data) {
+                alert("No se encontró ningún paciente con ese DNI.");
+                return;
+            }
+
+            // Llenar el modal con los datos
+            const fechaCita = data.fecha_evaluacion_solicitada.split('-').reverse().join('/');
+            const lugarAtencion = LUGARES[data.fecha_evaluacion_solicitada] || 'No definido';
+
+            document.getElementById('contenidoModal').innerHTML = `
+                <p><strong>Paciente:</strong> ${data.apellidos_nombres}</p>
+                <p><strong>DNI:</strong> ${data.numero_documento}</p>
+                <p><strong>Celular:</strong> ${data.telefono_celular}</p>
+                <hr style="border:0; border-top:1px solid #ddd; margin:10px 0;">
+                <p><strong>Fecha Cita:</strong> ${fechaCita}</p>
+                <p><strong>Turno:</strong> ${data.turno}</p>
+                <p><strong>Hora:</strong> ${data.hora_asignada}</p>
+                <p><strong>Consultorio:</strong> ${data.consultorio}</p>
+                <p><strong>Lugar:</strong> ${lugarAtencion}</p>
+            `;
+            
+            document.getElementById('modalBusqueda').style.display = 'flex';
+        }
+
+        function cerrarModal() {
+            document.getElementById('modalBusqueda').style.display = 'none';
+            document.getElementById('buscarDni').value = '';
+        }
+
+        // --- RESTO DE FUNCIONES ---
+        async function eliminarRegistro(id, nombre) {
+            const confirmacion = confirm(`¿Está seguro de eliminar el registro de ${nombre}?\n\nEsto liberará su cupo inmediatamente.`);
+            if (!confirmacion) return;
+
+            const { error } = await _supabase.from('solicitudes_evaluacion_medica').delete().eq('id', id);
+
+            if (error) {
+                alert("Error al eliminar: " + error.message);
+            } else {
+                document.getElementById(`fila-${id}`).remove();
+                const total = parseInt(document.getElementById('totalRegistros').textContent) - 1;
+                document.getElementById('totalRegistros').textContent = total;
+            }
+        }
+
+        async function borrarTodo() {
+            const confirmacion1 = confirm("⚠️ ¿Estás seguro de que quieres borrar TODOS los registros de la campaña?");
+            if (!confirmacion1) return;
+
+            const confirmacion2 = confirm("🚨 ¡ÚLTIMA ADVERTENCIA! Esta acción liberará todos los cupos y no se puede deshacer. ¿Continuar?");
+            if (!confirmacion2) return;
+
+            const { error } = await _supabase.from('solicitudes_evaluacion_medica').delete().neq('id', 0);
+
+            if (error) {
+                alert("Error al borrar: " + error.message);
+            } else {
+                alert("✅ Todos los registros han sido eliminados. Los cupos están libres nuevamente.");
+                cargarDatos();
+            }
+        }
+
+        function exportarCSV() {
+            if (datosGlobales.length === 0) { alert("No hay datos para exportar."); return; }
+
+            const cabeceras = ["Fecha Registro", "Paciente", "Tipo Doc", "Número Doc", "Celular", "Vínculo", "Fecha Cita", "Turno", "Hora", "Consultorio", "Lugar de Atención"];
+            
+            const filas = datosGlobales.map(reg => {
+                const lugarAtencion = LUGARES[reg.fecha_evaluacion_solicitada] || 'No definido';
+                return [
+                    new Date(reg.created_at).toLocaleString('es-PE'),
+                    `"${reg.apellidos_nombres}"`, 
+                    reg.tipo_documento,
+                    `"${reg.numero_documento}"`,
+                    `"${reg.telefono_celular}"`,
+                    reg.vinculo_familia_policial,
+                    reg.fecha_evaluacion_solicitada.split('-').reverse().join('/'),
+                    reg.turno,
+                    reg.hora_asignada,
+                    reg.consultorio,
+                    `"${lugarAtencion}"`
+                ];
+            });
+
+            let csvContent = cabeceras.join(",") + "\n";
+            filas.forEach(fila => { csvContent += fila.join(",") + "\n"; });
+
+            const blob = new Blob(["\uFEFF" + csvContent], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement("a");
+            link.href = URL.createObjectURL(blob);
+            link.download = "Citas_Noviembre_Azul_2026.csv";
+            link.click();
+        }
+
+        function generarReportePDF() {
+            if (datosGlobales.length === 0) { alert("No hay datos para generar el reporte."); return; }
+
+            const totalPacientes = datosGlobales.length;
+            const porFecha = { '2026-11-14': 0, '2026-11-21': 0, '2026-11-28': 0 };
+            datosGlobales.forEach(reg => {
+                if (porFecha[reg.fecha_evaluacion_solicitada] !== undefined) { porFecha[reg.fecha_evaluacion_solicitada]++; }
+            });
+
+            const fechaActual = new Date().toLocaleString('es-PE');
+            const contenedorPdf = document.createElement('div');
+            contenedorPdf.style.padding = '40px';
+            contenedorPdf.style.fontFamily = "'Open Sans', Arial, sans-serif";
+            contenedorPdf.style.color = '#333';
+            contenedorPdf.style.backgroundColor = '#fff';
+            contenedorPdf.style.width = '100%';
+            contenedorPdf.style.maxWidth = '1000px';
+            contenedorPdf.style.margin = '0 auto';
+
+            let filasHtml = '';
+            datosGlobales.forEach((reg, index) => {
+                const fechaCita = reg.fecha_evaluacion_solicitada.split('-').reverse().join('/');
+                const bgColor = index % 2 === 0 ? '#ffffff' : '#f8fafc';
+                filasHtml += `
+                    <tr style="background-color: ${bgColor};">
+                        <td style="border: 1px solid #ddd; padding: 6px; font-size: 10px;">${reg.apellidos_nombres}</td>
+                        <td style="border: 1px solid #ddd; padding: 6px; font-size: 10px;">${reg.numero_documento}</td>
+                        <td style="border: 1px solid #ddd; padding: 6px; font-size: 10px;">${reg.telefono_celular}</td>
+                        <td style="border: 1px solid #ddd; padding: 6px; font-size: 10px;">${fechaCita}</td>
+                        <td style="border: 1px solid #ddd; padding: 6px; font-size: 10px;">${reg.turno}</td>
+                        <td style="border: 1px solid #ddd; padding: 6px; font-size: 10px;">${reg.hora_asignada}</td>
+                        <td style="border: 1px solid #ddd; padding: 6px; font-size: 10px;">${reg.consultorio}</td>
+                    </tr>
+                `;
+            });
+
+            contenedorPdf.innerHTML = `
+                <div style="text-align: center; border-bottom: 3px solid #11422E; padding-bottom: 15px; margin-bottom: 20px;">
+                    <h1 style="font-family: 'Montserrat', sans-serif; color: #11422E; font-size: 22px; margin: 0;">DEPARTAMENTO DE UROLOGÍA</h1>
+                    <p style="font-size: 14px; color: #666; margin-top: 5px;">Reporte Oficial de Inscripciones - Campaña Noviembre Azul 2026</p>
+                    <p style="font-size: 11px; color: #999; margin-top: 5px;">Generado el: ${fechaActual}</p>
+                </div>
+                <div style="background-color: #F8FAFC; padding: 15px; border-radius: 8px; border: 1px solid #E2E8F0; margin-bottom: 20px; display: flex; justify-content: space-around;">
+                    <div style="text-align: center;"><span style="font-size: 12px; color: #666;">Total Registrados</span><br><strong style="font-size: 20px; color: #11422E;">${totalPacientes}</strong></div>
+                    <div style="text-align: center;"><span style="font-size: 12px; color: #666;">14/11/2026</span><br><strong style="font-size: 20px; color: #11422E;">${porFecha['2026-11-14']}</strong></div>
+                    <div style="text-align: center;"><span style="font-size: 12px; color: #666;">21/11/2026</span><br><strong style="font-size: 20px; color: #11422E;">${porFecha['2026-11-21']}</strong></div>
+                    <div style="text-align: center;"><span style="font-size: 12px; color: #666;">28/11/2026</span><br><strong style="font-size: 20px; color: #11422E;">${porFecha['2026-11-28']}</strong></div>
+                </div>
+                <h2 style="font-family: 'Montserrat', sans-serif; font-size: 14px; color: #D4AF37; text-transform: uppercase; margin-bottom: 10px;">Lista Completa de Pacientes</h2>
+                <table style="width: 100%; border-collapse: collapse; font-size: 11px;">
+                    <thead>
+                        <tr style="background-color: #11422E; color: white;">
+                            <th style="border: 1px solid #ddd; padding: 8px; text-align: left;">Paciente</th>
+                            <th style="border: 1px solid #ddd; padding: 8px; text-align: left;">DNI</th>
+                            <th style="border: 1px solid #ddd; padding: 8px; text-align: left;">Celular</th>
+                            <th style="border: 1px solid #ddd; padding: 8px; text-align: left;">Fecha Cita</th>
+                            <th style="border: 1px solid #ddd; padding: 8px; text-align: left;">Turno</th>
+                            <th style="border: 1px solid #ddd; padding: 8px; text-align: left;">Hora</th>
+                            <th style="border: 1px solid #ddd; padding: 8px; text-align: left;">Consultorio</th>
+                        </tr>
+                    </thead>
+                    <tbody>${filasHtml}</tbody>
+                </table>
+                <div style="text-align: center; margin-top: 30px; font-size: 10px; color: #6B7280; border-top: 1px solid #ddd; padding-top: 10px;">
+                    <p>Este documento es un reporte interno generado automáticamente por el sistema de gestión de la campaña.</p>
+                    <p>DIRSAL PNP - Noviembre Azul 2026</p>
+                </div>
+            `;
+
+            const opt = {
+                margin:       0.3,
+                filename:     `Reporte_Noviembre_Azul_${new Date().getTime()}.pdf`,
+                image:        { type: 'jpeg', quality: 0.98 },
+                html2canvas:  { scale: 2, useCORS: true },
+                jsPDF:        { unit: 'in', format: 'letter', orientation: 'landscape' }
+            };
+
+            html2pdf().set(opt).from(contenedorPdf).save();
+        }
+    </script>
+</body>
+</html>
