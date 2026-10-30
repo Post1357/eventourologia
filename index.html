@@ -30,11 +30,9 @@
             font-family: 'Open Sans', sans-serif; 
             background-color: var(--gris-fondo); 
             color: var(--texto-oscuro); 
-            line-height: 1.6; 
+            line-height: 1.5; 
             min-height: 100vh;
             -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
             user-select: none;
         }
 
@@ -42,144 +40,258 @@
 
         .header-institucional {
             background-color: var(--verde-medio);
-            background-image: 
-                linear-gradient(rgba(10, 46, 31, 0.9), rgba(10, 46, 31, 0.9)),
-                repeating-linear-gradient(0deg, transparent, transparent 39px, rgba(255,255,255,0.05) 40px),
-                repeating-linear-gradient(90deg, transparent, transparent 39px, rgba(255,255,255,0.05) 40px);
             color: white;
-            padding: 50px 20px 80px 20px;
+            padding: 30px 15px 50px 15px;
             text-align: center;
             border-bottom: 3px solid var(--dorado);
         }
 
-        .header-institucional h1 { font-family: 'Montserrat', sans-serif; font-size: 24px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 10px; color: var(--blanco); }
-        .header-institucional p { font-size: 14px; color: var(--dorado); font-weight: 500; text-transform: uppercase; letter-spacing: 2px; }
+        .header-institucional h1 { font-family: 'Montserrat', sans-serif; font-size: 20px; font-weight: 700; text-transform: uppercase; margin-bottom: 6px; }
+        .header-institucional p { font-size: 13px; color: var(--dorado); font-weight: 500; text-transform: uppercase; letter-spacing: 1px; }
 
-        /* --- PANEL DE DISPONIBILIDAD --- */
         .panel-cupos {
-            background-color: white; border-radius: 12px; padding: 25px; text-align: center; margin: -40px auto 20px auto; max-width: 800px; box-shadow: 0 10px 25px rgba(0,0,0,0.08); position: relative; z-index: 20; border-top: 4px solid var(--dorado);
+            background-color: white; border-radius: 12px; padding: 20px; text-align: center; margin: -30px auto 15px auto; max-width: 800px; box-shadow: 0 8px 20px rgba(0,0,0,0.08); position: relative; z-index: 20; border-top: 4px solid var(--dorado);
         }
-        .panel-cupos h2 { font-family: 'Montserrat', sans-serif; color: var(--texto-gris); font-size: 16px; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 5px; font-weight: 600; }
-        
-        .numero-gigante { font-family: 'Montserrat', sans-serif; font-size: 65px; font-weight: 800; color: var(--verde-medio); line-height: 1; margin-bottom: 15px; transition: color 0.3s ease; }
+        .panel-cupos h2 { font-family: 'Montserrat', sans-serif; color: var(--texto-gris); font-size: 14px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px; font-weight: 600; }
+        .numero-gigante { font-family: 'Montserrat', sans-serif; font-size: 50px; font-weight: 800; color: var(--verde-medio); line-height: 1; margin-bottom: 10px; }
         .numero-gigante.pocos-cupos { color: var(--rojo-alerta); }
-        .texto-cupos { font-size: 18px; color: var(--texto-oscuro); font-weight: 600; }
+        .texto-cupos { font-size: 15px; color: var(--texto-oscuro); font-weight: 600; }
         
-        /* --- BARRAS DE PROGRESO POR FECHA --- */
-        .desglose-cupos { display: flex; justify-content: center; gap: 20px; margin-top: 20px; flex-wrap: wrap; }
-        .desglose-item { 
-            background-color: #F8FAFC; padding: 15px 20px; border-radius: 8px; border: 1px solid #E2E8F0; 
-            font-size: 14px; color: var(--texto-gris); width: 100%; max-width: 220px; text-align: left;
-        }
-        .desglose-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 8px; }
-        .desglose-fecha { font-weight: 700; color: var(--texto-oscuro); font-size: 14px; }
-        .desglose-num { font-family: 'Montserrat', sans-serif; font-size: 16px; font-weight: 800; color: var(--verde-medio); }
-        
-        .barra-fondo { background-color: #E2E8F0; border-radius: 10px; height: 12px; width: 100%; overflow: hidden; margin-bottom: 8px; }
-        .barra-progreso { background-color: var(--dorado); height: 100%; width: 0%; transition: width 0.5s ease-in-out; border-radius: 10px; }
-        
-        .desglose-hospital { font-size: 11px; color: var(--texto-gris); line-height: 1.2; margin-top: 5px; display: block; border-top: 1px dashed #CBD5E1; padding-top: 5px;}
+        .desglose-cupos { display: flex; justify-content: center; gap: 15px; margin-top: 15px; flex-wrap: wrap; }
+        .desglose-item { background-color: #F8FAFC; padding: 10px 15px; border-radius: 8px; border: 1px solid #E2E8F0; width: 100%; max-width: 220px; text-align: left; }
+        .desglose-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 5px; }
+        .desglose-fecha { font-weight: 700; color: var(--texto-oscuro); font-size: 13px; }
+        .desglose-num { font-family: 'Montserrat', sans-serif; font-size: 14px; font-weight: 800; color: var(--verde-medio); }
+        .barra-fondo { background-color: #E2E8F0; border-radius: 10px; height: 10px; width: 100%; overflow: hidden; margin-bottom: 6px; }
+        .barra-progreso { background-color: var(--dorado); height: 100%; width: 0%; transition: width 0.5s ease; border-radius: 10px; }
+        .desglose-hospital { font-size: 10px; color: var(--texto-gris); line-height: 1.2; display: block; border-top: 1px dashed #CBD5E1; padding-top: 4px; }
 
-        /* Estado lleno */
         .desglose-item.lleno .barra-progreso { background-color: var(--verde-barra); }
         .desglose-item.lleno .desglose-num { color: var(--verde-barra); }
         .desglose-item.lleno { border-color: var(--verde-barra); background-color: #F0FDF4; }
 
         .contenedor-principal {
-            max-width: 900px; margin: 0 auto 40px auto; background-color: var(--blanco); border-radius: 8px; box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1); overflow: hidden;
+            max-width: 900px; margin: 0 auto 30px auto; background-color: var(--blanco); border-radius: 8px; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08); overflow: hidden;
         }
         
-        /* --- PANTALLA DE BIENVENIDA --- */
-        .pantalla-bienvenida { padding: 60px 40px; text-align: center; display: none; }
+        .pantalla-bienvenida { padding: 40px 20px; text-align: center; display: none; }
         .pantalla-bienvenida.activo { display: block; animation: fadeIn 0.4s ease; }
-        .pantalla-bienvenida h1 { color: var(--verde-medio); font-family: 'Montserrat', sans-serif; font-size: 28px; font-weight: 700; margin-bottom: 15px; }
-        .pantalla-bienvenida p { color: var(--texto-gris); font-size: 16px; margin-bottom: 40px; max-width: 600px; margin-left: auto; margin-right: auto; }
+        .pantalla-bienvenida h1 { color: var(--verde-medio); font-family: 'Montserrat', sans-serif; font-size: 24px; font-weight: 700; margin-bottom: 12px; }
+        .pantalla-bienvenida p { color: var(--texto-gris); font-size: 14px; margin-bottom: 30px; max-width: 550px; margin-left: auto; margin-right: auto; }
         
-        .botones-inicio { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; }
+        .botones-inicio { display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; }
         .btn-inicio {
             display: flex; flex-direction: column; align-items: center; justify-content: center;
-            width: 250px; padding: 30px 20px; border-radius: 12px; border: 2px solid var(--borde-input);
-            background-color: white; cursor: pointer; transition: all 0.3s ease; text-decoration: none; color: var(--texto-oscuro);
+            width: 240px; padding: 25px 15px; border-radius: 12px; border: 2px solid var(--borde-input);
+            background-color: white; cursor: pointer; transition: all 0.3s ease;
         }
-        .btn-inicio:hover { border-color: var(--verde-medio); box-shadow: 0 10px 20px rgba(0,0,0,0.1); transform: translateY(-5px); }
-        .btn-inicio .icono { font-size: 40px; margin-bottom: 15px; }
-        .btn-inicio h3 { font-family: 'Montserrat', sans-serif; font-size: 18px; color: var(--verde-medio); }
-        .btn-inicio p { font-size: 13px; color: var(--texto-gris); margin: 0; }
+        .btn-inicio:hover { border-color: var(--verde-medio); box-shadow: 0 8px 18px rgba(0,0,0,0.08); transform: translateY(-3px); }
+        .btn-inicio .icono { font-size: 34px; margin-bottom: 10px; }
+        .btn-inicio h3 { font-family: 'Montserrat', sans-serif; font-size: 16px; color: var(--verde-medio); }
+        .btn-inicio p { font-size: 12px; color: var(--texto-gris); margin: 0; }
 
-        /* --- SECCIÓN DEL FORMULARIO Y CONSULTA --- */
-        .contenido-form { padding: 40px; display: none; }
+        .contenido-form { padding: 30px; display: none; }
         .contenido-form.activo { display: block; animation: fadeIn 0.4s ease; }
         
-        .titulo-form { color: var(--verde-medio); font-family: 'Montserrat', sans-serif; font-size: 26px; font-weight: 700; margin-bottom: 10px; line-height: 1.2; }
-        .subtitulo { font-weight: 600; color: var(--dorado); font-size: 15px; margin-bottom: 20px; display: block; text-transform: uppercase; letter-spacing: 1px; }
-        .nota { font-size: 14px; color: var(--texto-gris); background-color: #F8FAFC; padding: 15px; border-left: 4px solid var(--dorado); border-radius: 0 4px 4px 0; margin-bottom: 30px; }
+        .titulo-form { color: var(--verde-medio); font-family: 'Montserrat', sans-serif; font-size: 22px; font-weight: 700; margin-bottom: 6px; }
+        .subtitulo { font-weight: 600; color: var(--dorado); font-size: 14px; margin-bottom: 15px; display: block; text-transform: uppercase; }
+        .nota { font-size: 13px; color: var(--texto-gris); background-color: #F8FAFC; padding: 12px; border-left: 4px solid var(--dorado); border-radius: 0 4px 4px 0; margin-bottom: 25px; }
 
-        h2.seccion { color: var(--verde-oscuro); font-family: 'Montserrat', sans-serif; font-size: 18px; font-weight: 600; margin-top: 40px; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 2px solid #E2E8F0; display: flex; align-items: center; }
-        h2.seccion::before { content: ''; display: inline-block; width: 6px; height: 22px; background-color: var(--dorado); margin-right: 12px; border-radius: 2px; }
+        h2.seccion { color: var(--verde-oscuro); font-family: 'Montserrat', sans-serif; font-size: 16px; font-weight: 600; margin-top: 30px; margin-bottom: 15px; padding-bottom: 8px; border-bottom: 2px solid #E2E8F0; display: flex; align-items: center; }
+        h2.seccion::before { content: ''; display: inline-block; width: 5px; height: 18px; background-color: var(--dorado); margin-right: 10px; border-radius: 2px; }
 
-        .campo-grupo { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px; align-items: start; }
+        .campo-grupo { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px; align-items: start; }
         .campo-grupo.full-width { grid-template-columns: 1fr; }
         .campo-info { display: flex; flex-direction: column; }
-        .campo-label { font-weight: 600; color: var(--texto-oscuro); font-size: 13px; margin-bottom: 6px; }
+        .campo-label { font-weight: 600; color: var(--texto-oscuro); font-size: 13px; margin-bottom: 5px; }
         .campo-label span { color: var(--rojo-alerta); }
-        .campo-ayuda { font-size: 12px; color: var(--texto-gris); margin-top: 6px; }
+        .campo-ayuda { font-size: 11px; color: var(--texto-gris); margin-top: 4px; }
 
         input[type="text"], input[type="number"], input[type="tel"], input[type="email"], select {
-            width: 100%; padding: 12px 15px; border: 1px solid var(--borde-input); border-radius: 6px; background-color: var(--amarillo-input); font-family: 'Open Sans', sans-serif; font-size: 15px; color: var(--texto-oscuro); transition: all 0.3s ease;
+            width: 100%; padding: 10px 12px; border: 1px solid var(--borde-input); border-radius: 6px; background-color: var(--amarillo-input); font-family: 'Open Sans', sans-serif; font-size: 14px; color: var(--texto-oscuro); transition: all 0.3s ease;
         }
-        input:focus, select:focus { outline: none; border-color: var(--verde-medio); box-shadow: 0 0 0 4px rgba(17, 66, 46, 0.1); background-color: var(--blanco); }
+        input:focus, select:focus { outline: none; border-color: var(--verde-medio); box-shadow: 0 0 0 3px rgba(17, 66, 46, 0.1); background-color: var(--blanco); }
+        input[readonly] { background-color: #E2E8F0; cursor: not-allowed; }
 
-        .alerta-dni { display: none; background-color: #FEE2E2; border: 1px solid #F87171; color: #991B1B; padding: 12px; border-radius: 6px; font-weight: 600; margin-top: 10px; font-size: 13px; animation: fadeIn 0.3s ease; }
+        .alerta-dni { display: none; background-color: #FEE2E2; border: 1px solid #F87171; color: #991B1B; padding: 10px; border-radius: 6px; font-weight: 600; margin-top: 8px; font-size: 12px; }
 
-        .info-lugar { display: none; background-color: #EFF6FF; border: 1px solid #BFDBFE; border-radius: 8px; padding: 15px 20px; margin-top: 10px; margin-bottom: 20px; animation: fadeIn 0.3s ease; }
-        .info-lugar h4 { color: #1E40AF; font-family: 'Montserrat', sans-serif; font-size: 15px; margin-bottom: 5px; }
-        .info-lugar p { color: #1E3A8A; font-size: 14px; margin: 0; }
-        .info-lugar strong { font-weight: 700; }
+        .info-lugar { display: none; background-color: #EFF6FF; border: 1px solid #BFDBFE; border-radius: 8px; padding: 12px 15px; margin-top: 8px; margin-bottom: 15px; }
+        .info-lugar h4 { color: #1E40AF; font-family: 'Montserrat', sans-serif; font-size: 14px; margin-bottom: 4px; }
+        .info-lugar p { color: #1E3A8A; font-size: 13px; margin: 0; }
 
-        .grid-horarios { display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 10px; margin-top: 15px; }
-        .btn-hora { padding: 10px; border: 1px solid var(--borde-input); background-color: #F8FAFC; border-radius: 6px; text-align: center; cursor: pointer; font-weight: 600; font-size: 14px; color: var(--texto-oscuro); transition: all 0.2s; user-select: none; }
-        .btn-hora:hover { border-color: var(--verde-medio); background-color: #E2E8F0; }
-        .btn-hora.selected { background-color: var(--verde-medio); color: white; border-color: var(--verde-medio); box-shadow: 0 4px 6px rgba(17, 66, 46, 0.2); }
-        .btn-hora:disabled { background-color: #e5e7eb; color: #9ca3af; border-color: #e5e7eb; cursor: not-allowed; text-decoration: line-through; }
-
-        .check-conformidad { display: flex; align-items: flex-start; gap: 10px; background-color: #F8FAFC; padding: 15px; border-radius: 6px; border: 1px solid var(--borde-input); cursor: pointer; }
-        .check-conformidad input[type="checkbox"] { width: 20px; height: 20px; margin-top: 2px; cursor: pointer; accent-color: var(--verde-medio); }
-        .check-conformidad label { font-size: 14px; color: var(--texto-oscuro); cursor: pointer; font-weight: 500; }
-
-        .resumen-cita { display: none; background-color: #F0FDF4; border: 2px solid #22C55E; border-radius: 8px; padding: 30px; margin-top: 30px; text-align: center; animation: fadeIn 0.5s ease-out; }
-        .resumen-cita h3 { color: #166534; font-family: 'Montserrat', sans-serif; font-size: 24px; margin-bottom: 20px; }
-        .resumen-cita p { font-size: 16px; margin-bottom: 8px; color: #1F2937; }
-        .resumen-cita strong { color: #15803D; font-size: 18px; }
-        
-        .area-resumen { background-color: white; padding: 20px; border-radius: 8px; margin: 20px 0; border: 1px dashed #22C55E; text-align: left; }
-
-        .nota-captura {
-            background-color: #FEF3C7; border: 1px solid #F59E0B; color: #92400E; padding: 15px; border-radius: 8px; margin: 20px 0; font-weight: 600; font-size: 15px; display: flex; align-items: center; justify-content: center; gap: 10px;
+        /* BANNER TEMPORIZADOR DE BLOQUEO */
+        .banner-bloqueo {
+            display: none; background-color: #FFFBEB; border: 1px solid #FCD34D; color: #92400E; padding: 8px 12px; border-radius: 6px; font-size: 13px; font-weight: 600; margin-bottom: 12px; text-align: center;
         }
 
-        .btn-accion { background-color: var(--verde-medio); color: white; padding: 12px 25px; border: none; border-radius: 6px; cursor: pointer; font-size: 15px; font-weight: 600; font-family: 'Montserrat', sans-serif; margin-top: 15px; transition: all 0.3s ease; }
-        .btn-accion:hover { background-color: var(--verde-oscuro); transform: translateY(-2px); }
+        /* GRID DE HORARIOS */
+        .grid-horarios { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); 
+            gap: 10px; 
+            margin-top: 8px; 
+        }
 
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        /* 1. HORARIO DISPONIBLE (BOTÓN POR DEFECTO) */
+        .btn-hora { 
+            padding: 12px 6px; 
+            border: 1.5px solid #CBD5E1; 
+            background-color: #FFFFFF; 
+            border-radius: 8px; 
+            text-align: center; 
+            cursor: pointer; 
+            font-weight: 700; 
+            font-size: 14px; 
+            color: #1E293B; 
+            transition: all 0.2s ease;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+        .btn-hora:hover:not(:disabled) { 
+            border-color: var(--verde-medio); 
+            background-color: #F0FDF4; 
+            color: var(--verde-oscuro);
+            transform: translateY(-2px);
+        }
+
+        /* 2. HORARIO APARTADO POR TI (DORADO / ÁMBAR) */
+        .btn-hora.selected { 
+            background-color: #FEF3C7 !important; 
+            color: #92400E !important; 
+            border: 2px solid var(--dorado) !important; 
+            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.4) !important;
+            transform: scale(1.02);
+        }
+
+        /* 3. HORARIO OCUPADO / USADO POR OTRO (TINTADO ROJIZO/GRIS OPACO BLOQUEADO) */
+        .btn-hora:disabled, .btn-hora.ocupado { 
+            background-color: #F1F5F9 !important; 
+            border: 1.5px solid #E2E8F0 !important; 
+            color: #94A3B8 !important; 
+            cursor: not-allowed !important; 
+            opacity: 0.55 !important; 
+            text-decoration: line-through;
+            box-shadow: none !important;
+            transform: none !important;
+            position: relative;
+        }
+
+        .check-conformidad { display: flex; align-items: flex-start; gap: 8px; background-color: #F8FAFC; padding: 12px; border-radius: 6px; border: 1px solid var(--borde-input); cursor: pointer; }
+        .check-conformidad input[type="checkbox"] { width: 18px; height: 18px; margin-top: 2px; accent-color: var(--verde-medio); }
+        .check-conformidad label { font-size: 13px; color: var(--texto-oscuro); font-weight: 500; }
+
+        .btn-accion { background-color: var(--verde-medio); color: white; padding: 12px 20px; border: none; border-radius: 6px; cursor: pointer; font-size: 14px; font-weight: 600; font-family: 'Montserrat', sans-serif; margin-top: 15px; transition: all 0.2s ease; }
+        .btn-accion:hover { background-color: var(--verde-oscuro); }
+
+        /* TICKET COMPACTO MÓVIL */
+        .contenedor-cita-movil {
+            background-color: #F0FDF4;
+            border: 2px solid #22C55E;
+            border-radius: 10px;
+            padding: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .encabezado-ticket {
+            text-align: center;
+            border-bottom: 1px dashed #22C55E;
+            padding-bottom: 6px;
+        }
+        .encabezado-ticket h3 {
+            color: #166534;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 16px;
+            margin: 0;
+        }
+        .encabezado-ticket p {
+            font-size: 10px;
+            color: #4B5563;
+            margin-top: 2px;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        .tarjeta-datos {
+            background-color: #FFFFFF;
+            border-radius: 6px;
+            padding: 10px 12px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            border: 1px solid #E2E8F0;
+        }
+
+        .dato-box { display: flex; flex-direction: column; }
+        .dato-box.full { grid-column: 1 / -1; }
+        .dato-box .etiqueta {
+            font-size: 10px;
+            text-transform: uppercase;
+            color: #64748B;
+            font-weight: 700;
+        }
+        .dato-box .valor {
+            font-size: 13px;
+            color: #0F172A;
+            font-weight: 700;
+            line-height: 1.2;
+            word-break: break-word;
+        }
+        .dato-box .valor-destacado {
+            color: #15803D;
+            font-size: 14px;
+        }
+
+        .bloque-lugar {
+            grid-column: 1 / -1;
+            background-color: #ECFDF5;
+            padding: 6px 8px;
+            border-radius: 4px;
+            border-left: 3px solid #10B981;
+            margin-top: 2px;
+        }
+        .bloque-lugar .lugar-nombre { font-size: 11px; font-weight: 700; color: #065F46; line-height: 1.2; }
+        .bloque-lugar .lugar-dir { font-size: 10px; color: #047857; margin-top: 2px; line-height: 1.2; }
+
+        .aviso-captura {
+            background-color: #FEF3C7;
+            border: 1px solid #F59E0B;
+            color: #92400E;
+            padding: 6px 10px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 11px;
+            text-align: center;
+        }
+
+        .aviso-llegada {
+            font-size: 10px;
+            color: #64748B;
+            text-align: center;
+            margin: 0;
+            font-weight: 600;
+        }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
 
         @media (max-width: 768px) {
-            .header-institucional { padding: 30px 20px 70px 20px; }
-            .header-institucional h1 { font-size: 20px; }
-            .contenido-form { padding: 25px 20px; }
-            .pantalla-bienvenida { padding: 40px 20px; }
-            .campo-grupo { grid-template-columns: 1fr; gap: 15px; }
-            .titulo-form { font-size: 22px; }
-            .numero-gigante { font-size: 50px; }
-            .desglose-cupos { flex-direction: column; gap: 10px; align-items: center; }
-            .botones-inicio { flex-direction: column; align-items: center; }
-            .btn-inicio { width: 100%; max-width: 300px; }
+            .header-institucional { padding: 20px 15px 40px 15px; }
+            .header-institucional h1 { font-size: 17px; }
+            .contenido-form { padding: 15px; }
+            .pantalla-bienvenida { padding: 30px 15px; }
+            .campo-grupo { grid-template-columns: 1fr; gap: 10px; }
+            .titulo-form { font-size: 19px; }
+            .numero-gigante { font-size: 42px; }
+            .desglose-cupos { flex-direction: column; gap: 8px; align-items: center; }
+            .btn-inicio { width: 100%; max-width: 280px; }
         }
     </style>
 </head>
 <body oncontextmenu="return false;">
 
     <div class="header-institucional">
-        <h1>DEPARTAMENTO DE UROLOGIA DEL HN PNP LNS.</h1>
+        <h1>DEPARTAMENTO DE UROLOGÍA DEL HN PNP LNS</h1>
         <p>Campaña Noviembre Azul 2026 · DIRSAL PNP</p>
     </div>
 
@@ -195,32 +307,32 @@
         <!-- PANTALLA 1: BIENVENIDA -->
         <div id="pantallaBienvenida" class="pantalla-bienvenida activo">
             <h1>Bienvenido a la Campaña</h1>
-            <p>Por favor, seleccione una opción para continuar. Si ya se inscribió, puede consultar los detalles de su cita.</p>
+            <p>Seleccione una opción. Si ya completó su registro, puede verificar los datos de su cita.</p>
             
             <div class="botones-inicio">
                 <div class="btn-inicio" onclick="mostrarFormulario()">
                     <div class="icono">📝</div>
                     <h3>Registrarme al Evento</h3>
-                    <p>Inscríbete para una evaluación médica</p>
+                    <p>Inscripción para evaluación médica</p>
                 </div>
                 
                 <div class="btn-inicio" onclick="mostrarConsulta()">
                     <div class="icono">🔍</div>
                     <h3>Consultar mi Cita</h3>
-                    <p>Verifica tu horario y lugar</p>
+                    <p>Verifica tu fecha, horario y lugar</p>
                 </div>
             </div>
         </div>
 
         <!-- PANTALLA 2: FORMULARIO -->
         <div id="seccionFormulario" class="contenido-form">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
                 <h1 class="titulo-form">Solicitud de Evaluación Médica</h1>
-                <button onclick="volverInicio()" style="background: none; border: none; color: var(--texto-gris); cursor: pointer; font-size: 14px; text-decoration: underline;">Volver al inicio</button>
+                <button type="button" onclick="cancelarYVolverInicio()" style="background: none; border: none; color: var(--texto-gris); cursor: pointer; font-size: 13px; text-decoration: underline;">Volver al inicio</button>
             </div>
             <span class="subtitulo">Registro de Cita</span>
             <div class="nota">
-                <strong>Complete los campos obligatorios (*).</strong> Un formulario por persona (DNI único).
+                <strong>Complete los campos requeridos (*).</strong> Cada horario es un cupo único individual.
             </div>
 
             <form id="formCampana">
@@ -229,38 +341,33 @@
                 <div class="campo-grupo full-width">
                     <div class="campo-info">
                         <label class="campo-label">Apellidos y nombres <span>*</span></label>
-                        <input type="text" id="nombre" placeholder="Escriba sus datos completos" required>
+                        <input type="text" id="nombre" placeholder="Escriba sus nombres y apellidos" required>
                     </div>
                 </div>
 
                 <div class="campo-grupo">
                     <div class="campo-info">
                         <label class="campo-label">Tipo de documento <span>*</span></label>
-                        <select id="tipo_doc" required onchange="ajustarDocumento()">
-                            <option value="" disabled selected>Seleccione una opción</option>
-                            <option value="DNI">DNI</option>
-                            <option value="CARNET DE EXTRANJERIA">CARNET DE EXTRANJERIA</option>
-                            <option value="OTRO">OTRO</option>
-                        </select>
+                        <input type="text" id="tipo_doc" value="DNI" readonly required>
                     </div>
                     <div class="campo-info">
-                        <label class="campo-label">Número de documento <span>*</span></label>
-                        <input type="text" id="num_doc" placeholder="Ingrese su número" required oninput="validarSoloNumeros(this)" onblur="validarDniExistente()">
-                        <span class="campo-ayuda">Ingrese como texto, conservando ceros iniciales.</span>
+                        <label class="campo-label">Número de DNI (8 dígitos) <span>*</span></label>
+                        <input type="text" id="num_doc" placeholder="Ingrese 8 dígitos" maxlength="8" required oninput="validarDniInput(this)" onblur="validarDniExistente()">
+                        <span class="campo-ayuda">Solo números, exactamente 8 dígitos.</span>
                         <div id="alertaDni" class="alerta-dni">
-                            ⚠️ Usted ya se encuentra registrado en esta campaña. Solo se permite un registro por persona.
+                            ⚠️ Usted ya tiene un registro confirmado en esta campaña.
                         </div>
                     </div>
                 </div>
 
                 <div class="campo-grupo">
                     <div class="campo-info">
-                        <label class="campo-label">Edad cumplida en años <span>*</span></label>
+                        <label class="campo-label">Edad cumplida <span>*</span></label>
                         <input type="number" id="edad" placeholder="Ej. 45" required min="18" max="100">
                     </div>
                     <div class="campo-info">
                         <label class="campo-label">Teléfono celular <span>*</span></label>
-                        <input type="text" id="telefono" placeholder="999888777" required maxlength="9" oninput="validarSoloNumeros(this)">
+                        <input type="tel" id="telefono" placeholder="999888777" required maxlength="9" oninput="validarSoloNumeros(this)">
                     </div>
                 </div>
 
@@ -290,7 +397,7 @@
                     <div class="campo-info">
                         <label class="campo-label">Correo electrónico</label>
                         <input type="email" id="correo" placeholder="ejemplo@correo.com">
-                        <span class="campo-ayuda">Opcional. Verifique la dirección.</span>
+                        <span class="campo-ayuda">Opcional.</span>
                     </div>
                 </div>
 
@@ -301,9 +408,9 @@
                         <label class="campo-label">Día de la campaña <span>*</span></label>
                         <select id="fecha_eval" required onchange="actualizarTurnos()">
                             <option value="" disabled selected>Seleccione el día</option>
-                            <option value="2026-11-14">14/11/2026 (100 cupos)</option>
-                            <option value="2026-11-21">21/11/2026 (50 cupos)</option>
-                            <option value="2026-11-28">28/11/2026 (50 cupos)</option>
+                            <option value="2026-11-14">14/11/2026</option>
+                            <option value="2026-11-21">21/11/2026</option>
+                            <option value="2026-11-28">28/11/2026</option>
                         </select>
                     </div>
                     <div class="campo-info">
@@ -321,9 +428,14 @@
                     <p><strong>Dirección:</strong> <span id="lugarDireccion"></span></p>
                 </div>
 
-                <div class="campo-info" style="margin-top: 10px;">
+                <div class="campo-info" style="margin-top: 5px;">
                     <label class="campo-label">Horarios disponibles <span>*</span></label>
-                    <span class="campo-ayuda" style="margin-bottom: 10px;">Haga clic en una hora para seleccionarla. Si no ve horas, el turno está lleno.</span>
+                    
+                    <div id="bannerBloqueo" class="banner-bloqueo">
+                        ⏱️ Horario apartado temporalmente por <span id="tiempoRestante" style="font-weight: 800; color: #B45309;">05:00</span> min. Complete y confirme para asegurar su cita.
+                    </div>
+                    
+                    <span class="campo-ayuda" style="margin-bottom: 8px;">Haga clic en un recuadro. Los horarios ya usados aparecen tachados y deshabilitados.</span>
                     <div id="contenedorHorarios" class="grid-horarios"></div>
                 </div>
 
@@ -332,83 +444,99 @@
                 <div class="campo-grupo full-width">
                     <div class="check-conformidad">
                         <input type="checkbox" id="conformidad" required>
-                        <label for="conformidad">Declaro que los datos son correctos y autorizo su uso para gestionar esta solicitud y contactarme sobre la campaña. <span style="color: var(--rojo-alerta);">*</span></label>
+                        <label for="conformidad">Declaro que los datos son verídicos y autorizo su gestión para la campaña institucional. <span style="color: var(--rojo-alerta);">*</span></label>
                     </div>
                 </div>
 
-                <button type="submit" id="btnEnviar" class="btn-accion" style="width: 100%; background-color: var(--dorado); color: var(--verde-oscuro); padding: 15px;">Confirmar Inscripción</button>
+                <button type="submit" id="btnEnviar" class="btn-accion" style="width: 100%; background-color: var(--dorado); color: var(--verde-oscuro); padding: 14px; font-weight: 700;">Confirmar Inscripción</button>
             </form>
         </div>
 
         <!-- PANTALLA 3: CONSULTA DE CITA -->
         <div id="seccionConsulta" class="contenido-form">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
                 <h1 class="titulo-form">Consultar mi Cita</h1>
-                <button onclick="volverInicio()" style="background: none; border: none; color: var(--texto-gris); cursor: pointer; font-size: 14px; text-decoration: underline;">Volver al inicio</button>
+                <button type="button" onclick="cancelarYVolverInicio()" style="background: none; border: none; color: var(--texto-gris); cursor: pointer; font-size: 13px; text-decoration: underline;">Volver al inicio</button>
             </div>
             <span class="subtitulo">Verificación de Registro</span>
-            <p>Ingrese su número de documento y teléfono celular para buscar su cita programada.</p>
+            <p style="font-size: 13px; color: var(--texto-gris);">Ingrese su número de DNI y teléfono celular registrados:</p>
 
-            <div class="campo-grupo full-width" style="margin-top: 30px;">
+            <div class="campo-grupo full-width" style="margin-top: 20px;">
                 <div class="campo-info">
-                    <label class="campo-label">Número de documento <span>*</span></label>
-                    <input type="text" id="consulta_dni" placeholder="Ingrese su DNI" required oninput="validarSoloNumeros(this)">
+                    <label class="campo-label">Número de DNI (8 dígitos) <span>*</span></label>
+                    <input type="text" id="consulta_dni" placeholder="Ingrese su DNI" maxlength="8" required oninput="validarDniInput(this)">
                 </div>
             </div>
             <div class="campo-grupo full-width">
                 <div class="campo-info">
                     <label class="campo-label">Teléfono celular <span>*</span></label>
-                    <input type="text" id="consulta_telefono" placeholder="Ingrese su celular" required maxlength="9" oninput="validarSoloNumeros(this)">
+                    <input type="tel" id="consulta_telefono" placeholder="Ingrese su celular" required maxlength="9" oninput="validarSoloNumeros(this)">
                 </div>
             </div>
 
-            <button onclick="buscarCita()" class="btn-accion" style="width: 100%;">Buscar Cita</button>
+            <button type="button" onclick="buscarCita()" class="btn-accion" style="width: 100%;">Buscar Cita</button>
             
-            <div id="mensajeConsulta" style="margin-top: 20px; font-weight: 600; padding: 15px; border-radius: 6px; text-align: center; display: none; font-size: 14px;"></div>
+            <div id="mensajeConsulta" style="margin-top: 15px; font-weight: 600; padding: 12px; border-radius: 6px; text-align: center; display: none; font-size: 13px;"></div>
         </div>
 
-        <!-- PANTALLA 4: RESULTADO / RESUMEN DE CITA -->
+        <!-- PANTALLA 4: RESULTADO / RESUMEN DE CITA COMPACTO PARA CELULAR -->
         <div id="resumenCita" class="contenido-form">
-            <div class="resumen-cita" style="display: block; margin-top: 0;">
-                <h3>✅ ¡Cita Confirmada!</h3>
+            <div class="contenedor-cita-movil">
+                <div class="encabezado-ticket">
+                    <h3>✅ ¡Cita Confirmada!</h3>
+                    <p>HN PNP LNS · Campaña Noviembre Azul 2026</p>
+                </div>
                 
-                <div id="areaResumen" class="area-resumen">
-                    <div style="text-align: center; margin-bottom: 20px;">
-                        <h2 style="font-family: 'Montserrat'; color: var(--verde-medio); font-size: 18px; margin-bottom: 5px;">DEPARTAMENTO DE UROLOGÍA</h2>
-                        <p style="font-size: 12px; color: var(--texto-gris);">Campaña Noviembre Azul 2026 - DIRSAL PNP</p>
+                <div class="tarjeta-datos">
+                    <div class="dato-box full">
+                        <span class="etiqueta">Paciente</span>
+                        <span class="valor" id="resNombre">--</span>
                     </div>
-                    
-                    <p style="text-align: left;">Paciente: <strong id="resNombre"></strong></p>
-                    <p style="text-align: left;">Documento: <strong id="resDni"></strong></p>
-                    <hr style="border: 0; border-top: 1px solid #E5E7EB; margin: 15px 0;">
-                    <p style="text-align: left;">Fecha de Cita: <strong id="resFecha"></strong></p>
-                    <p style="text-align: left;">Turno: <strong id="resTurno"></strong></p>
-                    <p style="text-align: left;">Hora exacta: <strong id="resHora"></strong></p>
-                    <p style="text-align: left;">Consultorio asignado: <strong id="resConsultorio"></strong></p>
-                    
-                    <div style="background-color: #DCFCE7; padding: 15px; border-radius: 6px; margin: 15px 0; border: 1px solid #86EFAC; text-align: left;">
-                        <p style="margin: 0; font-size: 12px; color: #166534; font-weight: 600;">Lugar de atención:</p>
-                        <p style="margin: 5px 0 0 0; font-size: 14px; color: #14532D;"><strong id="resLugarNombre"></strong></p>
-                        <p style="margin: 2px 0 0 0; font-size: 12px; color: #14532D;"><span id="resLugarDireccion"></span></p>
+
+                    <div class="dato-box">
+                        <span class="etiqueta">DNI</span>
+                        <span class="valor" id="resDni">--</span>
                     </div>
-                    
-                    <p style="font-size: 12px; color: #6B7280; text-align: center; margin-top: 20px;">Por favor, llegue 10 minutos antes con su DNI original.</p>
+
+                    <div class="dato-box">
+                        <span class="etiqueta">Fecha</span>
+                        <span class="valor valor-destacado" id="resFecha">--</span>
+                    </div>
+
+                    <div class="dato-box">
+                        <span class="etiqueta">Turno</span>
+                        <span class="valor" id="resTurno">--</span>
+                    </div>
+
+                    <div class="dato-box">
+                        <span class="etiqueta">Hora Asignada</span>
+                        <span class="valor valor-destacado" id="resHora">--</span>
+                    </div>
+
+                    <div class="dato-box full">
+                        <span class="etiqueta">Consultorio</span>
+                        <span class="valor valor-destacado" id="resConsultorio">--</span>
+                    </div>
+
+                    <div class="bloque-lugar">
+                        <div class="lugar-nombre" id="resLugarNombre">--</div>
+                        <div class="lugar-dir" id="resLugarDireccion">--</div>
+                    </div>
                 </div>
 
-                <div class="nota-captura">
-                    📸 Tome una captura de pantalla de este turno asignado para presentarlo el día de su atención.
+                <div class="aviso-captura">
+                    📸 Tome captura de pantalla ahora para presentarla al ingresar.
                 </div>
-                
-                <div style="margin-top: 20px;">
-                    <button onclick="volverInicio()" class="btn-accion" style="background-color: #6B7280;">Volver al Inicio</button>
-                </div>
+
+                <p class="aviso-llegada">Llegar 10 minutos antes portando su DNI en físico.</p>
+
+                <button type="button" onclick="volverInicio()" class="btn-accion" style="background-color: var(--verde-medio); margin-top: 5px; padding: 10px; font-size: 13px;">Volver al Inicio</button>
             </div>
         </div>
 
     </div>
 
     <script>
-        // --- BLOQUEO DE CÓDIGO FUENTE ---
         document.addEventListener('keydown', function(e) {
             if (e.key === 'F12' || e.keyCode === 123) { e.preventDefault(); return false; }
             if (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J' || e.key === 'C' || e.keyCode === 73 || e.keyCode === 74 || e.keyCode === 67)) { e.preventDefault(); return false; }
@@ -421,10 +549,17 @@
         const { createClient } = supabase;
         const _supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
+        let sessionId = localStorage.getItem('sesion_paciente_id');
+        if (!sessionId) {
+            sessionId = 'sess_' + Math.random().toString(36).substring(2) + Date.now();
+            localStorage.setItem('sesion_paciente_id', sessionId);
+        }
+
         let horaSeleccionada = null;
-        let consultorioSeleccionado = null;
-        let cuposOcupadosGlobal = []; 
+        let consultorioSeleccionado = "Consultorio Principal";
         let dniDuplicado = false;
+        let temporizadorReserva = null;
+        let segundosRestantes = 300;
 
         const LUGARES = {
             '2026-11-14': { nombre: 'Consultorios de Tópico de Urología HN PNP LNS (Hospital Histórico)', direccion: 'Av. Brasil Cdra. 26 s/n, Jesús María, Lima', corto: 'Tópico Urología HN PNP' },
@@ -443,6 +578,27 @@
             '2026-11-28': 50
         };
 
+        // --- NORMALIZADOR DE HORAS ---
+        function sonHorasIguales(h1, h2) {
+            if (!h1 || !h2) return false;
+            const aMinutos = (str) => {
+                const s = str.toString().trim().toUpperCase();
+                const esPM = s.includes('PM');
+                const esAM = s.includes('AM');
+                const soloHora = s.replace(/AM|PM/g, '').trim();
+                const partes = soloHora.split(':');
+                if (partes.length < 2) return -1;
+                let h = parseInt(partes[0], 10);
+                let m = parseInt(partes[1], 10);
+                if (esPM && h < 12) h += 12;
+                if (esAM && h === 12) h = 0;
+                return h * 60 + m;
+            };
+            const m1 = aMinutos(h1);
+            const m2 = aMinutos(h2);
+            return m1 !== -1 && m1 === m2;
+        }
+
         function ocultarTodo() {
             document.getElementById('pantallaBienvenida').classList.remove('activo');
             document.getElementById('seccionFormulario').classList.remove('activo');
@@ -450,11 +606,20 @@
             document.getElementById('resumenCita').classList.remove('activo');
         }
 
+        async function cancelarYVolverInicio() {
+            await liberarReservaActual();
+            volverInicio();
+        }
+
         function volverInicio() {
+            limpiarTimerReserva();
+            horaSeleccionada = null;
             ocultarTodo();
             document.getElementById('pantallaBienvenida').classList.add('activo');
             document.getElementById('formCampana').reset();
+            document.getElementById('tipo_doc').value = "DNI";
             document.getElementById('alertaDni').style.display = 'none';
+            document.getElementById('bannerBloqueo').style.display = 'none';
             document.getElementById('contenedorHorarios').innerHTML = '';
             document.getElementById('infoLugar').style.display = 'none';
             document.getElementById('mensajeConsulta').style.display = 'none';
@@ -465,10 +630,16 @@
         function mostrarFormulario() { ocultarTodo(); document.getElementById('seccionFormulario').classList.add('activo'); }
         function mostrarConsulta() { ocultarTodo(); document.getElementById('seccionConsulta').classList.add('activo'); }
 
-        // --- LÓGICA DE CONTADORES Y BARRAS ---
+        function validarSoloNumeros(input) { input.value = input.value.replace(/[^0-9]/g, ''); }
+        function validarDniInput(input) { 
+            input.value = input.value.replace(/[^0-9]/g, ''); 
+            if (input.value.length > 8) input.value = input.value.slice(0, 8);
+        }
+
         async function actualizarContadores() {
-            // Forzamos una lectura limpia trayendo solo los datos necesarios
-            const { data, error } = await _supabase.from('solicitudes_evaluacion_medica').select('fecha_evaluacion_solicitada');
+            const { data, error } = await _supabase
+                .from('solicitudes_evaluacion_medica')
+                .select('fecha_evaluacion_solicitada');
             
             if (error) { 
                 console.error("Error al leer cupos:", error); 
@@ -477,8 +648,8 @@
 
             let totalOcupados = data.length;
             let disponiblesGlobal = 200 - totalOcupados;
+            if (disponiblesGlobal < 0) disponiblesGlobal = 0;
 
-            // 1. Contador Global
             const contadorEl = document.getElementById('contadorGlobal');
             const textoEl = document.getElementById('textoCuposGlobal');
             contadorEl.textContent = disponiblesGlobal;
@@ -491,16 +662,14 @@
                 textoEl.textContent = "Cupones disponibles para este evento";
             }
 
-            // 2. Barras por Fecha
             const desgloseEl = document.getElementById('desgloseFechas');
             desgloseEl.innerHTML = '';
 
             for (const [fecha, max] of Object.entries(CUPOS_TOTALES)) {
-                // Convertimos ambos a String y quitamos espacios para asegurar la comparación perfecta
                 const ocupadosFecha = data.filter(d => String(d.fecha_evaluacion_solicitada).trim() === fecha).length;
-                const disponiblesFecha = max - ocupadosFecha;
-                
-                // Calculamos el porcentaje de llenado
+                let disponiblesFecha = max - ocupadosFecha;
+                if (disponiblesFecha < 0) disponiblesFecha = 0;
+
                 const porcentaje = (ocupadosFecha / max) * 100;
                 const estaLleno = ocupadosFecha >= max;
                 
@@ -527,35 +696,32 @@
 
         actualizarContadores();
 
-        function validarSoloNumeros(input) { input.value = input.value.replace(/[^0-9]/g, ''); }
-
-        function ajustarDocumento() {
-            const tipoDoc = document.getElementById('tipo_doc').value;
-            const inputDoc = document.getElementById('num_doc');
-            inputDoc.maxLength = tipoDoc === 'DNI' ? 8 : 12;
-            inputDoc.value = ""; 
-            document.getElementById('alertaDni').style.display = 'none';
-            dniDuplicado = false;
-        }
-
         async function validarDniExistente() {
-            const tipoDoc = document.getElementById('tipo_doc').value;
             const numDoc = document.getElementById('num_doc').value.trim();
             const alerta = document.getElementById('alertaDni');
 
-            if (tipoDoc === 'DNI' && numDoc.length === 8) {
-                const { data } = await _supabase.from('solicitudes_evaluacion_medica').select('id').eq('numero_documento', numDoc).maybeSingle();
+            if (numDoc.length === 8) {
+                const { data } = await _supabase
+                    .from('solicitudes_evaluacion_medica')
+                    .select('id')
+                    .eq('numero_documento', numDoc)
+                    .maybeSingle();
+
                 if (data) { alerta.style.display = 'block'; dniDuplicado = true; } 
                 else { alerta.style.display = 'none'; dniDuplicado = false; }
-            } else { alerta.style.display = 'none'; dniDuplicado = false; }
+            } else { 
+                alerta.style.display = 'none'; 
+                dniDuplicado = false; 
+            }
         }
 
         function actualizarTurnos() {
+            liberarReservaActual();
             const fecha = document.getElementById('fecha_eval').value;
             document.getElementById('turno_eval').value = "";
             document.getElementById('contenedorHorarios').innerHTML = '';
+            document.getElementById('bannerBloqueo').style.display = 'none';
             horaSeleccionada = null;
-            consultorioSeleccionado = null;
 
             const infoLugar = document.getElementById('infoLugar');
             if (fecha && LUGARES[fecha]) {
@@ -565,25 +731,50 @@
             } else { infoLugar.style.display = 'none'; }
         }
 
+        // --- CARGA DE HORARIOS: 1 CUPO POR BOTÓN ---
         async function cargarHorarios() {
             const fecha = document.getElementById('fecha_eval').value;
             const turno = document.getElementById('turno_eval').value;
             const contenedor = document.getElementById('contenedorHorarios');
             
-            contenedor.innerHTML = '<p style="grid-column: 1/-1; color: #666;">Cargando disponibilidad...</p>';
-            horaSeleccionada = null;
-            consultorioSeleccionado = null;
+            if (!fecha || !turno) return;
 
-            let consultoriosCount = (fecha === '2026-11-14') ? 4 : 2;
+            contenedor.innerHTML = '<p style="grid-column: 1/-1; color: #666; font-size:13px;">Consultando disponibilidad...</p>';
+
             if (fecha !== '2026-11-14' && turno === 'Tarde') {
-                contenedor.innerHTML = '<p style="grid-column: 1/-1; color: #DC2626; font-weight: bold;">El turno Tarde no está disponible para esta fecha.</p>';
+                contenedor.innerHTML = '<p style="grid-column: 1/-1; color: #DC2626; font-weight: bold; font-size:13px;">El turno Tarde no está habilitado para esta fecha.</p>';
                 return;
             }
 
-            const { data, error } = await _supabase.from('solicitudes_evaluacion_medica').select('hora_asignada, consultorio').eq('fecha_evaluacion_solicitada', fecha).eq('turno', turno);
-            if (error) { contenedor.innerHTML = '<p style="color:red;">Error al cargar horarios.</p>'; return; }
+            const ahoraIso = new Date().toISOString();
 
-            cuposOcupadosGlobal = data;
+            // 1. Obtener horas de citas ya confirmadas en esa fecha y turno
+            const { data: confirmados, error: errConf } = await _supabase
+                .from('solicitudes_evaluacion_medica')
+                .select('hora_asignada')
+                .eq('fecha_evaluacion_solicitada', fecha)
+                .eq('turno', turno);
+
+            if (errConf) {
+                contenedor.innerHTML = `<p style="color:red; font-size:13px;">Error al conectar con la base de datos.</p>`;
+                return;
+            }
+
+            // 2. Obtener reservas temporales activas (5 min) en esa fecha y turno
+            let reservas = [];
+            try {
+                const { data: resTemp, error: errTemp } = await _supabase
+                    .from('reservas_temporales')
+                    .select('hora, session_id')
+                    .eq('fecha', fecha)
+                    .eq('turno', turno)
+                    .gt('expira_en', ahoraIso);
+
+                if (!errTemp) reservas = resTemp || [];
+            } catch (e) {
+                console.warn("Aviso reservas temporales:", e);
+            }
+
             const minutosTotales = CONFIG_HORARIOS[turno].fin - CONFIG_HORARIOS[turno].inicio;
             const intervaloMinutos = Math.floor(minutosTotales / 25);
             contenedor.innerHTML = '';
@@ -594,46 +785,135 @@
                 let m = mins % 60;
                 let horaStr = `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}`;
                 let horaAmPm = `${h > 12 ? h - 12 : h}:${m.toString().padStart(2, '0')} ${h >= 12 ? 'PM' : 'AM'}`;
-                let ocupadosEnEstaHora = cuposOcupadosGlobal.filter(c => c.hora_asignada === horaStr);
-                let lleno = ocupadosEnEstaHora.length >= consultoriosCount;
-
-                let btn = document.createElement('div');
-                btn.className = 'btn-hora';
-                btn.textContent = horaAmPm;
                 
-                if (lleno) { btn.disabled = true; } 
-                else { btn.onclick = () => seleccionarHora(btn, horaStr, ocupadosEnEstaHora, consultoriosCount); }
+                // ¿Está confirmada en BD?
+                const ocupadoConfirmado = (confirmados || []).some(c => sonHorasIguales(c.hora_asignada, horaStr));
+
+                // ¿Está reservada por OTRA persona en los últimos 5 minutos?
+                const ocupadoPorOtro = reservas.some(r => sonHorasIguales(r.hora, horaStr) && r.session_id !== sessionId);
+
+                // ¿Es MI propia reserva activa?
+                const miReservaPropia = reservas.some(r => sonHorasIguales(r.hora, horaStr) && r.session_id === sessionId);
+
+                const estaOcupado = ocupadoConfirmado || ocupadoPorOtro;
+
+                let btn = document.createElement('button');
+                btn.type = 'button';
+                btn.className = 'btn-hora';
+                
+                if (miReservaPropia || horaSeleccionada === horaStr) {
+                    // Seleccionado por el usuario actual
+                    btn.classList.add('selected');
+                    btn.textContent = `⏱️ ${horaAmPm}`;
+                } else if (estaOcupado) {
+                    // Ocupado: Deshabilitado, opaco y con texto distintivo
+                    btn.disabled = true;
+                    btn.classList.add('ocupado');
+                    btn.textContent = `${horaAmPm} (Ocupado)`;
+                } else {
+                    // Disponible para seleccionar
+                    btn.textContent = horaAmPm;
+                    btn.onclick = () => apartarHorarioPor5Minutos(horaStr);
+                }
+
                 contenedor.appendChild(btn);
             }
         }
 
-        function seleccionarHora(btnElement, horaStr, ocupados, maxConsultorios) {
-            document.querySelectorAll('.btn-hora').forEach(b => b.classList.remove('selected'));
-            btnElement.classList.add('selected');
+        async function apartarHorarioPor5Minutos(horaStr) {
+            const fecha = document.getElementById('fecha_eval').value;
+            const turno = document.getElementById('turno_eval').value;
+
+            // Liberar cualquier reserva previa del mismo usuario
+            await liberarReservaActual();
+
+            const expiraEn = new Date(Date.now() + 5 * 60 * 1000).toISOString();
+
+            // Insertar reserva temporal
+            const { error } = await _supabase.from('reservas_temporales').insert([{
+                fecha: fecha,
+                turno: turno,
+                hora: horaStr,
+                session_id: sessionId,
+                expira_en: expiraEn
+            }]);
+
+            if (error) {
+                console.error("Detalle Supabase:", error);
+            }
+
             horaSeleccionada = horaStr;
-            for (let i = 1; i <= maxConsultorios; i++) {
-                let consultorioTest = `Consultorio ${i}`;
-                if (!ocupados.some(o => o.consultorio === consultorioTest)) {
-                    consultorioSeleccionado = consultorioTest;
-                    break;
+
+            iniciarTemporizador(300);
+            cargarHorarios();
+        }
+
+        function iniciarTemporizador(segundos) {
+            limpiarTimerReserva();
+            segundosRestantes = segundos;
+            const banner = document.getElementById('bannerBloqueo');
+            const spanTiempo = document.getElementById('tiempoRestante');
+            banner.style.display = 'block';
+
+            temporizadorReserva = setInterval(() => {
+                segundosRestantes--;
+                let m = Math.floor(segundosRestantes / 60);
+                let s = segundosRestantes % 60;
+                spanTiempo.textContent = `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+
+                if (segundosRestantes <= 0) {
+                    limpiarTimerReserva();
+                    banner.style.display = 'none';
+                    alert("⚠️ Su tiempo de reserva de 5 minutos ha expirado. Por favor seleccione su horario nuevamente.");
+                    liberarReservaActual();
+                    horaSeleccionada = null;
+                    cargarHorarios();
                 }
+            }, 1000);
+        }
+
+        function limpiarTimerReserva() {
+            if (temporizadorReserva) {
+                clearInterval(temporizadorReserva);
+                temporizadorReserva = null;
+            }
+        }
+
+        async function liberarReservaActual() {
+            try {
+                await _supabase.from('reservas_temporales').delete().eq('session_id', sessionId);
+            } catch (e) {
+                console.warn("Aviso al liberar:", e);
             }
         }
 
         document.getElementById('formCampana').addEventListener('submit', async (e) => {
             e.preventDefault();
             
-            if (dniDuplicado) { alert("Por favor, corrija el número de documento. Ya se encuentra registrado."); return; }
-            if (!horaSeleccionada || !consultorioSeleccionado) { alert("Por favor, seleccione una hora de la lista."); return; }
+            const dniVal = document.getElementById('num_doc').value.trim();
+            if (dniVal.length !== 8) {
+                alert("El DNI debe tener exactamente 8 números.");
+                return;
+            }
+
+            if (dniDuplicado) { 
+                alert("El DNI ya se encuentra registrado."); 
+                return; 
+            }
+
+            if (!horaSeleccionada) { 
+                alert("Debe seleccionar un horario antes de continuar."); 
+                return; 
+            }
 
             const btn = document.getElementById('btnEnviar');
             btn.disabled = true;
-            btn.textContent = 'Procesando...';
+            btn.textContent = 'Guardando cita...';
 
-            const nuevaSolicitud = {
-                apellidos_nombres: document.getElementById('nombre').value.trim(),
-                tipo_documento: document.getElementById('tipo_doc').value,
-                numero_documento: document.getElementById('num_doc').value.trim(),
+            const payloadFinal = {
+                apellidos_nombres: document.getElementById('nombre').value.trim().toUpperCase(),
+                tipo_documento: 'DNI',
+                numero_documento: dniVal,
                 edad: parseInt(document.getElementById('edad').value),
                 vinculo_familia_policial: document.getElementById('vinculo').value,
                 situacion_personal_pnp: document.getElementById('situacion').value || null,
@@ -642,20 +922,27 @@
                 fecha_evaluacion_solicitada: document.getElementById('fecha_eval').value,
                 turno: document.getElementById('turno_eval').value,
                 hora_asignada: horaSeleccionada,
-                consultorio: consultorioSeleccionado,
-                conformidad: document.getElementById('conformidad').checked
+                consultorio: "Consultorio Principal",
+                conformidad: document.getElementById('conformidad').checked,
+                estado: 'confirmado'
             };
 
-            const { error } = await _supabase.from('solicitudes_evaluacion_medica').insert([nuevaSolicitud], { returning: 'minimal' });
+            const { error } = await _supabase
+                .from('solicitudes_evaluacion_medica')
+                .insert([payloadFinal]);
 
             if (error) {
                 console.error(error);
-                alert(error.code === '23505' ? '⚠️ Usted ya se encuentra registrado (DNI duplicado).' : 'Error al guardar: ' + error.message);
+                alert(error.code === '23505' ? '⚠️ Este DNI ya está registrado.' : 'Error al registrar: ' + error.message);
                 btn.disabled = false;
                 btn.textContent = 'Confirmar Inscripción';
             } else {
-                mostrarResumen(nuevaSolicitud);
+                await liberarReservaActual();
+                limpiarTimerReserva();
+                mostrarResumen(payloadFinal);
                 actualizarContadores();
+                btn.disabled = false;
+                btn.textContent = 'Confirmar Inscripción';
             }
         });
 
@@ -664,14 +951,26 @@
             const telefono = document.getElementById('consulta_telefono').value.trim();
             const mensajeDiv = document.getElementById('mensajeConsulta');
 
-            if (!dni || !telefono) { alert("Por favor, ingrese su DNI y teléfono celular."); return; }
+            if (dni.length !== 8 || !telefono) { 
+                alert("Ingrese DNI de 8 dígitos y número celular."); 
+                return; 
+            }
 
-            const { data, error } = await _supabase.from('solicitudes_evaluacion_medica').select('*').eq('numero_documento', dni).eq('telefono_celular', telefono).maybeSingle();
+            const { data, error } = await _supabase
+                .from('solicitudes_evaluacion_medica')
+                .select('*')
+                .eq('numero_documento', dni)
+                .eq('telefono_celular', telefono)
+                .maybeSingle();
 
             if (error) {
-                mensajeDiv.style.display = 'block'; mensajeDiv.className = 'error'; mensajeDiv.textContent = 'Error al buscar: ' + error.message;
+                mensajeDiv.style.display = 'block'; 
+                mensajeDiv.style.color = 'var(--rojo-alerta)';
+                mensajeDiv.textContent = 'Error al consultar: ' + error.message;
             } else if (!data) {
-                mensajeDiv.style.display = 'block'; mensajeDiv.className = 'error'; mensajeDiv.textContent = '⚠️ No se encontró ninguna cita con los datos proporcionados.';
+                mensajeDiv.style.display = 'block'; 
+                mensajeDiv.style.color = 'var(--rojo-alerta)';
+                mensajeDiv.textContent = '⚠️ No se encontró ninguna cita con esos datos.';
             } else {
                 mensajeDiv.style.display = 'none';
                 mostrarResumen(data);
@@ -687,11 +986,13 @@
             document.getElementById('resFecha').textContent = datos.fecha_evaluacion_solicitada.split('-').reverse().join('/');
             document.getElementById('resTurno').textContent = datos.turno;
             document.getElementById('resHora').textContent = datos.hora_asignada;
-            document.getElementById('resConsultorio').textContent = datos.consultorio;
+            document.getElementById('resConsultorio').textContent = datos.consultorio || "Tópico de Urología";
 
-            const lugarData = LUGARES[datos.fecha_evaluacion_solicitada];
+            const lugarData = LUGARES[datos.fecha_evaluacion_solicitada] || { nombre: 'Por confirmar', direccion: '' };
             document.getElementById('resLugarNombre').textContent = lugarData.nombre;
             document.getElementById('resLugarDireccion').textContent = lugarData.direccion;
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
     </script>
 </body>
