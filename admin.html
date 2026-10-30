@@ -31,7 +31,7 @@
             min-height: 100vh; 
         }
         
-        /* --- LOGIN --- */
+        /* LOGIN */
         .login-box { 
             max-width: 400px; 
             margin: 10vh auto; 
@@ -58,7 +58,7 @@
         }
         input:focus { outline: none; border-color: var(--verde-medio); box-shadow: 0 0 0 3px rgba(17, 66, 46, 0.1); }
         
-        /* --- PANEL PRINCIPAL --- */
+        /* PANEL */
         .contenedor { 
             max-width: 1400px; 
             margin: auto; 
@@ -84,7 +84,7 @@
         
         .filtros { margin-bottom: 20px; display: flex; gap: 15px; flex-wrap: wrap; align-items: center; }
 
-        /* --- BUSCADOR DNI --- */
+        /* BUSCADOR DNI */
         .buscador-dni {
             display: flex;
             gap: 10px;
@@ -96,7 +96,7 @@
         }
         .buscador-dni input {
             margin-bottom: 0;
-            width: 200px;
+            width: 170px;
             padding: 8px 12px;
         }
         .buscador-dni button {
@@ -128,26 +128,35 @@
         .btn-pdf { background-color: var(--dorado); color: var(--verde-oscuro); }
         .btn-pdf:hover { background-color: #F4D03F; }
 
-        /* --- TABLA --- */
         .tabla-wrapper { overflow-x: auto; border-radius: 6px; border: 1px solid var(--borde); }
-        table { width: 100%; border-collapse: collapse; font-size: 13px; text-align: left; min-width: 1300px; }
+        table { width: 100%; border-collapse: collapse; font-size: 13px; text-align: left; min-width: 1200px; }
         th { background-color: var(--verde-medio); color: white; padding: 15px 10px; font-weight: 600; white-space: nowrap; border-bottom: 2px solid var(--dorado); }
         td { padding: 12px 10px; border-bottom: 1px solid var(--borde); color: #4B5563; vertical-align: middle; }
         tr:nth-child(even) { background-color: #F8FAFC; }
         tr:hover { background-color: #F1F5F9; }
         
+        .badge-confirmado {
+            background-color: #DCFCE7;
+            color: #166534;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
         .oculto { display: none; }
         #loginError { color: var(--rojo); font-size: 14px; margin-top: 10px; font-weight: 600; }
 
-        /* --- MODAL DE BÚSQUEDA --- */
+        /* MODAL */
         .modal-fondo {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 1000; justify-content: center; align-items: center; backdrop-filter: blur(4px);
         }
         .modal-contenido {
-            background: white; padding: 30px; border-radius: 12px; max-width: 400px; width: 90%; text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.2); animation: fadeIn 0.3s ease; position: relative;
+            background: white; padding: 30px; border-radius: 12px; max-width: 420px; width: 90%; text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.2); animation: fadeIn 0.3s ease; position: relative;
         }
         .modal-contenido h3 { font-family: 'Montserrat', sans-serif; color: var(--verde-medio); font-size: 20px; margin-bottom: 20px; border-bottom: 2px solid var(--dorado); padding-bottom: 10px; }
-        .modal-datos { text-align: left; font-size: 15px; line-height: 1.8; margin-bottom: 20px; background-color: #F8FAFC; padding: 15px; border-radius: 8px; }
+        .modal-datos { text-align: left; font-size: 14px; line-height: 1.8; margin-bottom: 20px; background-color: #F8FAFC; padding: 15px; border-radius: 8px; }
         .modal-datos strong { color: var(--verde-oscuro); }
         .cerrar-modal { position: absolute; top: 15px; right: 20px; font-size: 24px; cursor: pointer; color: #999; font-weight: bold; }
         .cerrar-modal:hover { color: var(--rojo); }
@@ -182,26 +191,26 @@
 
             <!-- BUSCADOR DNI -->
             <div class="buscador-dni">
-                <input type="text" id="buscarDni" placeholder="Buscar DNI..." oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+                <input type="text" id="buscarDni" placeholder="DNI (8 dígitos)..." maxlength="8" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
                 <button onclick="buscarPaciente()">🔍 Buscar</button>
             </div>
         </div>
 
-        <p style="margin-bottom: 15px;"><strong>Total de registros:</strong> <span id="totalRegistros" style="color: var(--dorado); font-weight: 700; font-size: 16px;">0</span></p>
+        <p style="margin-bottom: 15px;"><strong>Total de citas confirmadas:</strong> <span id="totalRegistros" style="color: var(--dorado); font-weight: 700; font-size: 16px;">0</span></p>
 
         <div class="tabla-wrapper">
             <table id="tablaRegistros">
                 <thead>
                     <tr>
                         <th>Fecha Reg.</th>
+                        <th>Estado</th>
                         <th>Paciente</th>
                         <th>DNI</th>
                         <th>Celular</th>
                         <th>Vínculo</th>
                         <th>Fecha Cita</th>
                         <th>Turno</th>
-                        <th>Hora</th>
-                        <th>Consultorio</th>
+                        <th>Horario Asignado</th>
                         <th>Lugar de Atención</th>
                         <th>Acciones</th>
                     </tr>
@@ -216,9 +225,7 @@
         <div class="modal-contenido">
             <span class="cerrar-modal" onclick="cerrarModal()">&times;</span>
             <h3>Datos del Paciente</h3>
-            <div class="modal-datos" id="contenidoModal">
-                <!-- Datos inyectados por JS -->
-            </div>
+            <div class="modal-datos" id="contenidoModal"></div>
             <button onclick="cerrarModal()" style="width: 100%;">Cerrar</button>
         </div>
     </div>
@@ -245,7 +252,7 @@
 
             const { error } = await _supabase.auth.signInWithPassword({ email, password });
             if (error) {
-                errorP.textContent = "Credenciales incorrectas o usuario no confirmado.";
+                errorP.textContent = "Credenciales incorrectas o usuario no autorizado.";
             } else {
                 errorP.textContent = "";
                 document.getElementById('loginSection').classList.add('oculto');
@@ -261,35 +268,37 @@
         }
 
         async function cargarDatos() {
+            // Traer únicamente registros confirmados ordenados
             const { data, error } = await _supabase
                 .from('solicitudes_evaluacion_medica')
                 .select('*')
+                .eq('estado', 'confirmado')
                 .order('fecha_evaluacion_solicitada', { ascending: true })
                 .order('turno', { ascending: true })
                 .order('hora_asignada', { ascending: true });
 
-            if (error) { alert("Error: " + error.message); return; }
+            if (error) { alert("Error al cargar registros: " + error.message); return; }
 
-            datosGlobales = data;
-            document.getElementById('totalRegistros').textContent = data.length;
+            datosGlobales = data || [];
+            document.getElementById('totalRegistros').textContent = datosGlobales.length;
             const tbody = document.getElementById('cuerpoTabla');
             tbody.innerHTML = '';
 
-            data.forEach(reg => {
-                const fechaCita = reg.fecha_evaluacion_solicitada.split('-').reverse().join('/'); 
-                const lugarAtencion = LUGARES[reg.fecha_evaluacion_solicitada] || 'No definido';
+            datosGlobales.forEach(reg => {
+                const fechaCita = reg.fecha_evaluacion_solicitada ? reg.fecha_evaluacion_solicitada.split('-').reverse().join('/') : '-'; 
+                const lugarAtencion = LUGARES[reg.fecha_evaluacion_solicitada] || 'Consultorios HN PNP LNS';
 
                 tbody.innerHTML += `
                     <tr id="fila-${reg.id}">
                         <td>${new Date(reg.created_at).toLocaleDateString('es-PE')}</td>
+                        <td><span class="badge-confirmado">Confirmado</span></td>
                         <td><strong>${reg.apellidos_nombres}</strong></td>
                         <td>${reg.numero_documento}</td>
                         <td>${reg.telefono_celular}</td>
                         <td>${reg.vinculo_familia_policial}</td>
                         <td><strong>${fechaCita}</strong></td>
                         <td>${reg.turno || '-'}</td>
-                        <td>${reg.hora_asignada || '-'}</td>
-                        <td>${reg.consultorio || '-'}</td>
+                        <td><strong>${reg.hora_asignada || '-'}</strong></td>
                         <td>${lugarAtencion}</td>
                         <td>
                             <button class="btn-eliminar" onclick="eliminarRegistro(${reg.id}, '${reg.apellidos_nombres}')">Eliminar</button>
@@ -299,37 +308,39 @@
             });
         }
 
-        // --- BUSCADOR DE PACIENTE (MODAL) ---
         async function buscarPaciente() {
             const dni = document.getElementById('buscarDni').value.trim();
-            if (!dni) { alert("Por favor, ingrese un DNI para buscar."); return; }
+            if (dni.length !== 8) { 
+                alert("Por favor, ingrese un número de DNI válido de 8 dígitos."); 
+                return; 
+            }
 
             const { data, error } = await _supabase
                 .from('solicitudes_evaluacion_medica')
                 .select('*')
                 .eq('numero_documento', dni)
+                .eq('estado', 'confirmado')
                 .maybeSingle();
 
-            if (error) { alert("Error al buscar: " + error.message); return; }
+            if (error) { alert("Error al consultar: " + error.message); return; }
             
             if (!data) {
-                alert("No se encontró ningún paciente con ese DNI.");
+                alert("No se encontró ningún paciente confirmado con el DNI " + dni);
                 return;
             }
 
-            // Llenar el modal con los datos
             const fechaCita = data.fecha_evaluacion_solicitada.split('-').reverse().join('/');
-            const lugarAtencion = LUGARES[data.fecha_evaluacion_solicitada] || 'No definido';
+            const lugarAtencion = LUGARES[data.fecha_evaluacion_solicitada] || 'Consultorios HN PNP LNS';
 
             document.getElementById('contenidoModal').innerHTML = `
                 <p><strong>Paciente:</strong> ${data.apellidos_nombres}</p>
                 <p><strong>DNI:</strong> ${data.numero_documento}</p>
                 <p><strong>Celular:</strong> ${data.telefono_celular}</p>
+                <p><strong>Vínculo:</strong> ${data.vinculo_familia_policial}</p>
                 <hr style="border:0; border-top:1px solid #ddd; margin:10px 0;">
-                <p><strong>Fecha Cita:</strong> ${fechaCita}</p>
+                <p><strong>Fecha de Cita:</strong> ${fechaCita}</p>
                 <p><strong>Turno:</strong> ${data.turno}</p>
-                <p><strong>Hora:</strong> ${data.hora_asignada}</p>
-                <p><strong>Consultorio:</strong> ${data.consultorio}</p>
+                <p><strong>Horario:</strong> ${data.hora_asignada}</p>
                 <p><strong>Lugar:</strong> ${lugarAtencion}</p>
             `;
             
@@ -341,9 +352,8 @@
             document.getElementById('buscarDni').value = '';
         }
 
-        // --- RESTO DE FUNCIONES ---
         async function eliminarRegistro(id, nombre) {
-            const confirmacion = confirm(`¿Está seguro de eliminar el registro de ${nombre}?\n\nEsto liberará su cupo inmediatamente.`);
+            const confirmacion = confirm(`¿Está seguro de anular la cita de ${nombre}?\n\nAl eliminar el registro, este horario quedará libre de inmediato.`);
             if (!confirmacion) return;
 
             const { error } = await _supabase.from('solicitudes_evaluacion_medica').delete().eq('id', id);
@@ -351,25 +361,23 @@
             if (error) {
                 alert("Error al eliminar: " + error.message);
             } else {
-                document.getElementById(`fila-${id}`).remove();
-                const total = parseInt(document.getElementById('totalRegistros').textContent) - 1;
-                document.getElementById('totalRegistros').textContent = total;
+                cargarDatos();
             }
         }
 
         async function borrarTodo() {
-            const confirmacion1 = confirm("⚠️ ¿Estás seguro de que quieres borrar TODOS los registros de la campaña?");
+            const confirmacion1 = confirm("⚠️ ¿Está seguro de que desea eliminar TODAS las citas confirmadas?");
             if (!confirmacion1) return;
 
-            const confirmacion2 = confirm("🚨 ¡ÚLTIMA ADVERTENCIA! Esta acción liberará todos los cupos y no se puede deshacer. ¿Continuar?");
+            const confirmacion2 = confirm("🚨 ¡ATENCIÓN! Esta acción borrará todas las inscripciones y habilitará nuevamente todos los horarios. ¿Continuar?");
             if (!confirmacion2) return;
 
             const { error } = await _supabase.from('solicitudes_evaluacion_medica').delete().neq('id', 0);
 
             if (error) {
-                alert("Error al borrar: " + error.message);
+                alert("Error al borrar registros: " + error.message);
             } else {
-                alert("✅ Todos los registros han sido eliminados. Los cupos están libres nuevamente.");
+                alert("✅ Todos los registros han sido eliminados. Los horarios están libres nuevamente.");
                 cargarDatos();
             }
         }
@@ -377,21 +385,21 @@
         function exportarCSV() {
             if (datosGlobales.length === 0) { alert("No hay datos para exportar."); return; }
 
-            const cabeceras = ["Fecha Registro", "Paciente", "Tipo Doc", "Número Doc", "Celular", "Vínculo", "Fecha Cita", "Turno", "Hora", "Consultorio", "Lugar de Atención"];
+            const cabeceras = ["Fecha Registro", "Estado", "Paciente", "Tipo Doc", "Número DNI", "Celular", "Vínculo", "Fecha Cita", "Turno", "Horario Asignado", "Lugar de Atención"];
             
             const filas = datosGlobales.map(reg => {
-                const lugarAtencion = LUGARES[reg.fecha_evaluacion_solicitada] || 'No definido';
+                const lugarAtencion = LUGARES[reg.fecha_evaluacion_solicitada] || 'Consultorios HN PNP LNS';
                 return [
                     new Date(reg.created_at).toLocaleString('es-PE'),
+                    'Confirmado',
                     `"${reg.apellidos_nombres}"`, 
-                    reg.tipo_documento,
+                    'DNI',
                     `"${reg.numero_documento}"`,
                     `"${reg.telefono_celular}"`,
                     reg.vinculo_familia_policial,
                     reg.fecha_evaluacion_solicitada.split('-').reverse().join('/'),
                     reg.turno,
-                    reg.hora_asignada,
-                    reg.consultorio,
+                    `"${reg.hora_asignada}"`,
                     `"${lugarAtencion}"`
                 ];
             });
@@ -402,7 +410,7 @@
             const blob = new Blob(["\uFEFF" + csvContent], { type: 'text/csv;charset=utf-8;' });
             const link = document.createElement("a");
             link.href = URL.createObjectURL(blob);
-            link.download = "Citas_Noviembre_Azul_2026.csv";
+            link.download = "Inscripciones_Noviembre_Azul_2026.csv";
             link.click();
         }
 
@@ -417,7 +425,7 @@
 
             const fechaActual = new Date().toLocaleString('es-PE');
             const contenedorPdf = document.createElement('div');
-            contenedorPdf.style.padding = '40px';
+            contenedorPdf.style.padding = '30px';
             contenedorPdf.style.fontFamily = "'Open Sans', Arial, sans-serif";
             contenedorPdf.style.color = '#333';
             contenedorPdf.style.backgroundColor = '#fff';
@@ -437,50 +445,43 @@
                         <td style="border: 1px solid #ddd; padding: 6px; font-size: 10px;">${fechaCita}</td>
                         <td style="border: 1px solid #ddd; padding: 6px; font-size: 10px;">${reg.turno}</td>
                         <td style="border: 1px solid #ddd; padding: 6px; font-size: 10px;">${reg.hora_asignada}</td>
-                        <td style="border: 1px solid #ddd; padding: 6px; font-size: 10px;">${reg.consultorio}</td>
                     </tr>
                 `;
             });
 
             contenedorPdf.innerHTML = `
                 <div style="text-align: center; border-bottom: 3px solid #11422E; padding-bottom: 15px; margin-bottom: 20px;">
-                    <h1 style="font-family: 'Montserrat', sans-serif; color: #11422E; font-size: 22px; margin: 0;">DEPARTAMENTO DE UROLOGÍA</h1>
-                    <p style="font-size: 14px; color: #666; margin-top: 5px;">Reporte Oficial de Inscripciones - Campaña Noviembre Azul 2026</p>
+                    <h1 style="font-family: 'Montserrat', sans-serif; color: #11422E; font-size: 20px; margin: 0;">DEPARTAMENTO DE UROLOGÍA</h1>
+                    <p style="font-size: 13px; color: #666; margin-top: 5px;">Reporte Oficial de Citas Confirmadas - Campaña Noviembre Azul 2026</p>
                     <p style="font-size: 11px; color: #999; margin-top: 5px;">Generado el: ${fechaActual}</p>
                 </div>
-                <div style="background-color: #F8FAFC; padding: 15px; border-radius: 8px; border: 1px solid #E2E8F0; margin-bottom: 20px; display: flex; justify-content: space-around;">
-                    <div style="text-align: center;"><span style="font-size: 12px; color: #666;">Total Registrados</span><br><strong style="font-size: 20px; color: #11422E;">${totalPacientes}</strong></div>
-                    <div style="text-align: center;"><span style="font-size: 12px; color: #666;">14/11/2026</span><br><strong style="font-size: 20px; color: #11422E;">${porFecha['2026-11-14']}</strong></div>
-                    <div style="text-align: center;"><span style="font-size: 12px; color: #666;">21/11/2026</span><br><strong style="font-size: 20px; color: #11422E;">${porFecha['2026-11-21']}</strong></div>
-                    <div style="text-align: center;"><span style="font-size: 12px; color: #666;">28/11/2026</span><br><strong style="font-size: 20px; color: #11422E;">${porFecha['2026-11-28']}</strong></div>
+                <div style="background-color: #F8FAFC; padding: 12px; border-radius: 8px; border: 1px solid #E2E8F0; margin-bottom: 20px; display: flex; justify-content: space-around;">
+                    <div style="text-align: center;"><span style="font-size: 11px; color: #666;">Total Confirmados</span><br><strong style="font-size: 18px; color: #11422E;">${totalPacientes}</strong></div>
+                    <div style="text-align: center;"><span style="font-size: 11px; color: #666;">14/11/2026</span><br><strong style="font-size: 18px; color: #11422E;">${porFecha['2026-11-14']}</strong></div>
+                    <div style="text-align: center;"><span style="font-size: 11px; color: #666;">21/11/2026</span><br><strong style="font-size: 18px; color: #11422E;">${porFecha['2026-11-21']}</strong></div>
+                    <div style="text-align: center;"><span style="font-size: 11px; color: #666;">28/11/2026</span><br><strong style="font-size: 18px; color: #11422E;">${porFecha['2026-11-28']}</strong></div>
                 </div>
-                <h2 style="font-family: 'Montserrat', sans-serif; font-size: 14px; color: #D4AF37; text-transform: uppercase; margin-bottom: 10px;">Lista Completa de Pacientes</h2>
                 <table style="width: 100%; border-collapse: collapse; font-size: 11px;">
                     <thead>
                         <tr style="background-color: #11422E; color: white;">
-                            <th style="border: 1px solid #ddd; padding: 8px; text-align: left;">Paciente</th>
-                            <th style="border: 1px solid #ddd; padding: 8px; text-align: left;">DNI</th>
-                            <th style="border: 1px solid #ddd; padding: 8px; text-align: left;">Celular</th>
-                            <th style="border: 1px solid #ddd; padding: 8px; text-align: left;">Fecha Cita</th>
-                            <th style="border: 1px solid #ddd; padding: 8px; text-align: left;">Turno</th>
-                            <th style="border: 1px solid #ddd; padding: 8px; text-align: left;">Hora</th>
-                            <th style="border: 1px solid #ddd; padding: 8px; text-align: left;">Consultorio</th>
+                            <th style="border: 1px solid #ddd; padding: 6px; text-align: left;">Paciente</th>
+                            <th style="border: 1px solid #ddd; padding: 6px; text-align: left;">DNI</th>
+                            <th style="border: 1px solid #ddd; padding: 6px; text-align: left;">Celular</th>
+                            <th style="border: 1px solid #ddd; padding: 6px; text-align: left;">Fecha Cita</th>
+                            <th style="border: 1px solid #ddd; padding: 6px; text-align: left;">Turno</th>
+                            <th style="border: 1px solid #ddd; padding: 6px; text-align: left;">Horario</th>
                         </tr>
                     </thead>
                     <tbody>${filasHtml}</tbody>
                 </table>
-                <div style="text-align: center; margin-top: 30px; font-size: 10px; color: #6B7280; border-top: 1px solid #ddd; padding-top: 10px;">
-                    <p>Este documento es un reporte interno generado automáticamente por el sistema de gestión de la campaña.</p>
-                    <p>DIRSAL PNP - Noviembre Azul 2026</p>
-                </div>
             `;
 
             const opt = {
-                margin:       0.3,
-                filename:     `Reporte_Noviembre_Azul_${new Date().getTime()}.pdf`,
-                image:        { type: 'jpeg', quality: 0.98 },
-                html2canvas:  { scale: 2, useCORS: true },
-                jsPDF:        { unit: 'in', format: 'letter', orientation: 'landscape' }
+                margin: 0.3,
+                filename: `Reporte_Noviembre_Azul_${new Date().getTime()}.pdf`,
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2, useCORS: true },
+                jsPDF: { unit: 'in', format: 'letter', orientation: 'landscape' }
             };
 
             html2pdf().set(opt).from(contenedorPdf).save();
