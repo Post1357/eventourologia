@@ -8,6 +8,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
     
     <style>
+        /* ... tu CSS completo sin cambios ... */
         :root {
             --verde-oscuro: #0A2E1F;
             --verde-medio: #11422E;
@@ -23,9 +24,7 @@
             --verde-exito: #16A34A;
             --verde-barra: #22C55E;
         }
-
         * { box-sizing: border-box; margin: 0; padding: 0; }
-
         body { 
             font-family: 'Open Sans', sans-serif; 
             background-color: var(--gris-fondo); 
@@ -35,9 +34,7 @@
             -webkit-user-select: none;
             user-select: none;
         }
-
         input, select, textarea { -webkit-user-select: auto; user-select: auto; }
-
         .header-institucional {
             background-color: var(--verde-medio);
             color: white;
@@ -45,10 +42,8 @@
             text-align: center;
             border-bottom: 3px solid var(--dorado);
         }
-
         .header-institucional h1 { font-family: 'Montserrat', sans-serif; font-size: 20px; font-weight: 700; text-transform: uppercase; margin-bottom: 6px; }
         .header-institucional p { font-size: 13px; color: var(--dorado); font-weight: 500; text-transform: uppercase; letter-spacing: 1px; }
-
         .panel-cupos {
             background-color: white; border-radius: 12px; padding: 20px; text-align: center; margin: -30px auto 15px auto; max-width: 800px; box-shadow: 0 8px 20px rgba(0,0,0,0.08); position: relative; z-index: 20; border-top: 4px solid var(--dorado);
         }
@@ -56,7 +51,6 @@
         .numero-gigante { font-family: 'Montserrat', sans-serif; font-size: 50px; font-weight: 800; color: var(--verde-medio); line-height: 1; margin-bottom: 10px; }
         .numero-gigante.pocos-cupos { color: var(--rojo-alerta); }
         .texto-cupos { font-size: 15px; color: var(--texto-oscuro); font-weight: 600; }
-        
         .desglose-cupos { display: flex; justify-content: center; gap: 15px; margin-top: 15px; flex-wrap: wrap; }
         .desglose-item { background-color: #F8FAFC; padding: 10px 15px; border-radius: 8px; border: 1px solid #E2E8F0; width: 100%; max-width: 220px; text-align: left; }
         .desglose-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 5px; }
@@ -65,20 +59,16 @@
         .barra-fondo { background-color: #E2E8F0; border-radius: 10px; height: 10px; width: 100%; overflow: hidden; margin-bottom: 6px; }
         .barra-progreso { background-color: var(--dorado); height: 100%; width: 0%; transition: width 0.5s ease; border-radius: 10px; }
         .desglose-hospital { font-size: 10px; color: var(--texto-gris); line-height: 1.2; display: block; border-top: 1px dashed #CBD5E1; padding-top: 4px; }
-
         .desglose-item.lleno .barra-progreso { background-color: var(--verde-barra); }
         .desglose-item.lleno .desglose-num { color: var(--verde-barra); }
         .desglose-item.lleno { border-color: var(--verde-barra); background-color: #F0FDF4; }
-
         .contenedor-principal {
             max-width: 900px; margin: 0 auto 30px auto; background-color: var(--blanco); border-radius: 8px; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08); overflow: hidden;
         }
-        
         .pantalla-bienvenida { padding: 40px 20px; text-align: center; display: none; }
         .pantalla-bienvenida.activo { display: block; animation: fadeIn 0.4s ease; }
         .pantalla-bienvenida h1 { color: var(--verde-medio); font-family: 'Montserrat', sans-serif; font-size: 24px; font-weight: 700; margin-bottom: 12px; }
         .pantalla-bienvenida p { color: var(--texto-gris); font-size: 14px; margin-bottom: 30px; max-width: 550px; margin-left: auto; margin-right: auto; }
-        
         .botones-inicio { display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; }
         .btn-inicio {
             display: flex; flex-direction: column; align-items: center; justify-content: center;
@@ -89,50 +79,37 @@
         .btn-inicio .icono { font-size: 34px; margin-bottom: 10px; }
         .btn-inicio h3 { font-family: 'Montserrat', sans-serif; font-size: 16px; color: var(--verde-medio); }
         .btn-inicio p { font-size: 12px; color: var(--texto-gris); margin: 0; }
-
         .contenido-form { padding: 30px; display: none; }
         .contenido-form.activo { display: block; animation: fadeIn 0.4s ease; }
-        
         .titulo-form { color: var(--verde-medio); font-family: 'Montserrat', sans-serif; font-size: 22px; font-weight: 700; margin-bottom: 6px; }
         .subtitulo { font-weight: 600; color: var(--dorado); font-size: 14px; margin-bottom: 15px; display: block; text-transform: uppercase; }
         .nota { font-size: 13px; color: var(--texto-gris); background-color: #F8FAFC; padding: 12px; border-left: 4px solid var(--dorado); border-radius: 0 4px 4px 0; margin-bottom: 25px; }
-
         h2.seccion { color: var(--verde-oscuro); font-family: 'Montserrat', sans-serif; font-size: 16px; font-weight: 600; margin-top: 30px; margin-bottom: 15px; padding-bottom: 8px; border-bottom: 2px solid #E2E8F0; display: flex; align-items: center; }
         h2.seccion::before { content: ''; display: inline-block; width: 5px; height: 18px; background-color: var(--dorado); margin-right: 10px; border-radius: 2px; }
-
         .campo-grupo { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px; align-items: start; }
         .campo-grupo.full-width { grid-template-columns: 1fr; }
         .campo-info { display: flex; flex-direction: column; }
         .campo-label { font-weight: 600; color: var(--texto-oscuro); font-size: 13px; margin-bottom: 5px; }
         .campo-label span { color: var(--rojo-alerta); }
         .campo-ayuda { font-size: 11px; color: var(--texto-gris); margin-top: 4px; }
-
         input[type="text"], input[type="number"], input[type="tel"], input[type="email"], select {
             width: 100%; padding: 10px 12px; border: 1px solid var(--borde-input); border-radius: 6px; background-color: var(--amarillo-input); font-family: 'Open Sans', sans-serif; font-size: 14px; color: var(--texto-oscuro); transition: all 0.3s ease;
         }
         input:focus, select:focus { outline: none; border-color: var(--verde-medio); box-shadow: 0 0 0 3px rgba(17, 66, 46, 0.1); background-color: var(--blanco); }
         input[readonly] { background-color: #E2E8F0; cursor: not-allowed; }
-
         .alerta-dni { display: none; background-color: #FEE2E2; border: 1px solid #F87171; color: #991B1B; padding: 10px; border-radius: 6px; font-weight: 600; margin-top: 8px; font-size: 12px; }
-
         .info-lugar { display: none; background-color: #EFF6FF; border: 1px solid #BFDBFE; border-radius: 8px; padding: 12px 15px; margin-top: 8px; margin-bottom: 15px; }
         .info-lugar h4 { color: #1E40AF; font-family: 'Montserrat', sans-serif; font-size: 14px; margin-bottom: 4px; }
         .info-lugar p { color: #1E3A8A; font-size: 13px; margin: 0; }
-
-        /* BANNER TEMPORIZADOR DE BLOQUEO */
         .banner-bloqueo {
             display: none; background-color: #FFFBEB; border: 1px solid #FCD34D; color: #92400E; padding: 8px 12px; border-radius: 6px; font-size: 13px; font-weight: 600; margin-bottom: 12px; text-align: center;
         }
-
-        /* GRID DE HORARIOS */
         .grid-horarios { 
             display: grid; 
             grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); 
             gap: 10px; 
             margin-top: 8px; 
         }
-
-        /* 1. HORARIO DISPONIBLE (BOTÓN POR DEFECTO) */
         .btn-hora { 
             padding: 12px 6px; 
             border: 1.5px solid #CBD5E1; 
@@ -152,8 +129,6 @@
             color: var(--verde-oscuro);
             transform: translateY(-2px);
         }
-
-        /* 2. HORARIO APARTADO POR TI (DORADO / ÁMBAR) */
         .btn-hora.selected { 
             background-color: #FEF3C7 !important; 
             color: #92400E !important; 
@@ -161,8 +136,6 @@
             box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.4) !important;
             transform: scale(1.02);
         }
-
-        /* 3. HORARIO OCUPADO / USADO POR OTRO (TINTADO ROJIZO/GRIS OPACO BLOQUEADO) */
         .btn-hora:disabled, .btn-hora.ocupado { 
             background-color: #F1F5F9 !important; 
             border: 1.5px solid #E2E8F0 !important; 
@@ -174,15 +147,11 @@
             transform: none !important;
             position: relative;
         }
-
         .check-conformidad { display: flex; align-items: flex-start; gap: 8px; background-color: #F8FAFC; padding: 12px; border-radius: 6px; border: 1px solid var(--borde-input); cursor: pointer; }
         .check-conformidad input[type="checkbox"] { width: 18px; height: 18px; margin-top: 2px; accent-color: var(--verde-medio); }
         .check-conformidad label { font-size: 13px; color: var(--texto-oscuro); font-weight: 500; }
-
         .btn-accion { background-color: var(--verde-medio); color: white; padding: 12px 20px; border: none; border-radius: 6px; cursor: pointer; font-size: 14px; font-weight: 600; font-family: 'Montserrat', sans-serif; margin-top: 15px; transition: all 0.2s ease; }
         .btn-accion:hover { background-color: var(--verde-oscuro); }
-
-        /* TICKET COMPACTO MÓVIL */
         .contenedor-cita-movil {
             background-color: #F0FDF4;
             border: 2px solid #22C55E;
@@ -193,7 +162,6 @@
             flex-direction: column;
             gap: 8px;
         }
-
         .encabezado-ticket {
             text-align: center;
             border-bottom: 1px dashed #22C55E;
@@ -212,7 +180,6 @@
             text-transform: uppercase;
             font-weight: 600;
         }
-
         .tarjeta-datos {
             background-color: #FFFFFF;
             border-radius: 6px;
@@ -222,7 +189,6 @@
             gap: 8px;
             border: 1px solid #E2E8F0;
         }
-
         .dato-box { display: flex; flex-direction: column; }
         .dato-box.full { grid-column: 1 / -1; }
         .dato-box .etiqueta {
@@ -242,7 +208,6 @@
             color: #15803D;
             font-size: 14px;
         }
-
         .bloque-lugar {
             grid-column: 1 / -1;
             background-color: #ECFDF5;
@@ -253,7 +218,6 @@
         }
         .bloque-lugar .lugar-nombre { font-size: 11px; font-weight: 700; color: #065F46; line-height: 1.2; }
         .bloque-lugar .lugar-dir { font-size: 10px; color: #047857; margin-top: 2px; line-height: 1.2; }
-
         .aviso-captura {
             background-color: #FEF3C7;
             border: 1px solid #F59E0B;
@@ -264,7 +228,6 @@
             font-size: 11px;
             text-align: center;
         }
-
         .aviso-llegada {
             font-size: 10px;
             color: #64748B;
@@ -272,9 +235,7 @@
             margin: 0;
             font-weight: 600;
         }
-
         @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
-
         @media (max-width: 768px) {
             .header-institucional { padding: 20px 15px 40px 15px; }
             .header-institucional h1 { font-size: 17px; }
@@ -636,17 +597,24 @@
             if (input.value.length > 8) input.value = input.value.slice(0, 8);
         }
 
+        // ============================================================
+        // CAMBIO 1: actualizarContadores() usa RPC contar_cupos
+        // ============================================================
         async function actualizarContadores() {
-            const { data, error } = await _supabase
-                .from('solicitudes_evaluacion_medica')
-                .select('fecha_evaluacion_solicitada');
-            
+            const { data, error } = await _supabase.rpc('contar_cupos');
             if (error) { 
                 console.error("Error al leer cupos:", error); 
                 return; 
             }
 
-            let totalOcupados = data.length;
+            const porFecha = {};
+            let totalOcupados = 0;
+            (data || []).forEach(r => {
+                const f = String(r.fecha).trim();
+                porFecha[f] = Number(r.ocupados);
+                totalOcupados += Number(r.ocupados);
+            });
+
             let disponiblesGlobal = 200 - totalOcupados;
             if (disponiblesGlobal < 0) disponiblesGlobal = 0;
 
@@ -666,7 +634,7 @@
             desgloseEl.innerHTML = '';
 
             for (const [fecha, max] of Object.entries(CUPOS_TOTALES)) {
-                const ocupadosFecha = data.filter(d => String(d.fecha_evaluacion_solicitada).trim() === fecha).length;
+                const ocupadosFecha = porFecha[fecha] || 0;
                 let disponiblesFecha = max - ocupadosFecha;
                 if (disponiblesFecha < 0) disponiblesFecha = 0;
 
@@ -696,19 +664,22 @@
 
         actualizarContadores();
 
+        // ============================================================
+        // CAMBIO 2: validarDniExistente() usa RPC dni_ya_registrado
+        // ============================================================
         async function validarDniExistente() {
             const numDoc = document.getElementById('num_doc').value.trim();
             const alerta = document.getElementById('alertaDni');
 
             if (numDoc.length === 8) {
-                const { data } = await _supabase
-                    .from('solicitudes_evaluacion_medica')
-                    .select('id')
-                    .eq('numero_documento', numDoc)
-                    .maybeSingle();
-
-                if (data) { alerta.style.display = 'block'; dniDuplicado = true; } 
-                else { alerta.style.display = 'none'; dniDuplicado = false; }
+                const { data, error } = await _supabase.rpc('dni_ya_registrado', { p_dni: numDoc });
+                if (!error && data === true) { 
+                    alerta.style.display = 'block'; 
+                    dniDuplicado = true; 
+                } else { 
+                    alerta.style.display = 'none'; 
+                    dniDuplicado = false; 
+                }
             } else { 
                 alerta.style.display = 'none'; 
                 dniDuplicado = false; 
@@ -731,7 +702,9 @@
             } else { infoLugar.style.display = 'none'; }
         }
 
-        // --- CARGA DE HORARIOS: 1 CUPO POR BOTÓN ---
+        // ============================================================
+        // CAMBIO 3: cargarHorarios() usa RPC horas_ocupadas
+        // ============================================================
         async function cargarHorarios() {
             const fecha = document.getElementById('fecha_eval').value;
             const turno = document.getElementById('turno_eval').value;
@@ -746,14 +719,9 @@
                 return;
             }
 
-            const ahoraIso = new Date().toISOString();
-
-            // 1. Obtener horas de citas ya confirmadas en esa fecha y turno
+            // 1. Obtener horas ocupadas vía RPC
             const { data: confirmados, error: errConf } = await _supabase
-                .from('solicitudes_evaluacion_medica')
-                .select('hora_asignada')
-                .eq('fecha_evaluacion_solicitada', fecha)
-                .eq('turno', turno);
+                .rpc('horas_ocupadas', { p_fecha: fecha, p_turno: turno });
 
             if (errConf) {
                 contenedor.innerHTML = `<p style="color:red; font-size:13px;">Error al conectar con la base de datos.</p>`;
@@ -768,7 +736,7 @@
                     .select('hora, session_id')
                     .eq('fecha', fecha)
                     .eq('turno', turno)
-                    .gt('expira_en', ahoraIso);
+                    .gt('expira_en', new Date().toISOString());
 
                 if (!errTemp) reservas = resTemp || [];
             } catch (e) {
@@ -786,8 +754,8 @@
                 let horaStr = `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}`;
                 let horaAmPm = `${h > 12 ? h - 12 : h}:${m.toString().padStart(2, '0')} ${h >= 12 ? 'PM' : 'AM'}`;
                 
-                // ¿Está confirmada en BD?
-                const ocupadoConfirmado = (confirmados || []).some(c => sonHorasIguales(c.hora_asignada, horaStr));
+                // ¿Está confirmada en BD? (ahora viene como {hora: '...'})
+                const ocupadoConfirmado = (confirmados || []).some(c => sonHorasIguales(c.hora, horaStr));
 
                 // ¿Está reservada por OTRA persona en los últimos 5 minutos?
                 const ocupadoPorOtro = reservas.some(r => sonHorasIguales(r.hora, horaStr) && r.session_id !== sessionId);
@@ -802,16 +770,13 @@
                 btn.className = 'btn-hora';
                 
                 if (miReservaPropia || horaSeleccionada === horaStr) {
-                    // Seleccionado por el usuario actual
                     btn.classList.add('selected');
                     btn.textContent = `⏱️ ${horaAmPm}`;
                 } else if (estaOcupado) {
-                    // Ocupado: Deshabilitado, opaco y con texto distintivo
                     btn.disabled = true;
                     btn.classList.add('ocupado');
                     btn.textContent = `${horaAmPm} (Ocupado)`;
                 } else {
-                    // Disponible para seleccionar
                     btn.textContent = horaAmPm;
                     btn.onclick = () => apartarHorarioPor5Minutos(horaStr);
                 }
@@ -824,12 +789,10 @@
             const fecha = document.getElementById('fecha_eval').value;
             const turno = document.getElementById('turno_eval').value;
 
-            // Liberar cualquier reserva previa del mismo usuario
             await liberarReservaActual();
 
             const expiraEn = new Date(Date.now() + 5 * 60 * 1000).toISOString();
 
-            // Insertar reserva temporal
             const { error } = await _supabase.from('reservas_temporales').insert([{
                 fecha: fecha,
                 turno: turno,
@@ -946,6 +909,9 @@
             }
         });
 
+        // ============================================================
+        // CAMBIO 4: buscarCita() usa RPC consultar_cita
+        // ============================================================
         async function buscarCita() {
             const dni = document.getElementById('consulta_dni').value.trim();
             const telefono = document.getElementById('consulta_telefono').value.trim();
@@ -957,23 +923,19 @@
             }
 
             const { data, error } = await _supabase
-                .from('solicitudes_evaluacion_medica')
-                .select('*')
-                .eq('numero_documento', dni)
-                .eq('telefono_celular', telefono)
-                .maybeSingle();
+                .rpc('consultar_cita', { p_dni: dni, p_telefono: telefono });
 
             if (error) {
                 mensajeDiv.style.display = 'block'; 
                 mensajeDiv.style.color = 'var(--rojo-alerta)';
                 mensajeDiv.textContent = 'Error al consultar: ' + error.message;
-            } else if (!data) {
+            } else if (!data || data.length === 0) {
                 mensajeDiv.style.display = 'block'; 
                 mensajeDiv.style.color = 'var(--rojo-alerta)';
                 mensajeDiv.textContent = '⚠️ No se encontró ninguna cita con esos datos.';
             } else {
                 mensajeDiv.style.display = 'none';
-                mostrarResumen(data);
+                mostrarResumen(data[0]);
             }
         }
 
