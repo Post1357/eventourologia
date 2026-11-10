@@ -469,7 +469,7 @@
                     r.turno === cfg.turno &&
                     r.consultorio === cfg.consultorio
                 ).length;
-                const disponibles = cfg.max - ocupados;
+                const disponibles = Math.max(0, cfg.max - ocupados);
                 const fechaFormateada = cfg.fecha.split('-').reverse().join('/');
                 const estaLleno = disponibles <= 0;
 
