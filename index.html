@@ -96,7 +96,6 @@
         .desglose-item.lleno .desglose-num { color: var(--verde-barra); }
         .desglose-item.lleno { border-color: var(--verde-barra); background-color: #F0FDF4; }
 
-        /* MODAL DE CUPOS LLENOS */
         .modal-lleno-fondo {
             display: none;
             position: fixed;
@@ -375,7 +374,6 @@
 </head>
 <body oncontextmenu="return false;">
 
-    <!-- MODAL CUPOS LLENOS -->
     <div id="modalLleno" class="modal-lleno-fondo">
         <div class="modal-lleno-contenido">
             <div class="icono-celebracion">🎉✨🎊</div>
@@ -409,7 +407,7 @@
             <p>Seleccione una opción. Si ya completó su registro, puede verificar los datos de su cita.</p>
             
             <div class="botones-inicio">
-                <div class="btn-inicio" onclick="mostrarFormulario()">
+                <div id="btnRegistrarme" class="btn-inicio" onclick="mostrarFormulario()">
                     <div class="icono">📝</div>
                     <h3>Registrarme al Evento</h3>
                     <p>Inscripción para evaluación médica</p>
@@ -659,7 +657,8 @@
         let dniDuplicado = false;
         let temporizadorRefresco = null;
         let celebracionMostrada = false;
-        let cuposPorConsultorioCache = {}; // { 'fecha|turno|consultorio': {ocupados, max} }
+        let cuposPorConsultorioCache = {};
+        let cuposDisponiblesGlobal = 0;
 
         const LUGARES = {
             '2026-11-14': { nombre: 'Consultorios de Tópico de Urología HN PNP LNS (Hospital Histórico)', direccion: 'Av. Brasil Cdra. 26 s/n, Jesús María, Lima', corto: 'Tópico Urología HN PNP' },
@@ -672,7 +671,6 @@
             'Tarde': { inicio: 13 * 60, fin: 18 * 60 }
         };
 
-        // CONSULTORIOS: el 21/11 ahora tiene 3 en Mañana
         const CONSULTORIOS_POR_FECHA = {
             '2026-11-14': {
                 'Mañana': ['Consultorio Mañana 1', 'Consultorio Mañana 2'],
@@ -686,14 +684,25 @@
             }
         };
 
-        // CUPOS TOTALES (25 por consultorio)
-        const CUPOS_POR_CONSULTORIO = 25;
+        // Configuración completa de consultorios (fecha + turno + consultorio)
+        const CONFIG_CONSULTORIOS = [
+            { fecha: '2026-11-14', turno: 'Mañana', consultorio: 'Consultorio Mañana 1', max: 25 },
+            { fecha: '2026-11-14', turno: 'Mañana', consultorio: 'Consultorio Mañana 2', max: 25 },
+            { fecha: '2026-11-14', turno: 'Tarde', consultorio: 'Consultorio Tarde 1', max: 25 },
+            { fecha: '2026-11-14', turno: 'Tarde', consultorio: 'Consultorio Tarde 2', max: 25 },
+            { fecha: '2026-11-21', turno: 'Mañana', consultorio: 'Consultorio Mañana 1', max: 25 },
+            { fecha: '2026-11-21', turno: 'Mañana', consultorio: 'Consultorio Mañana 2', max: 25 },
+            { fecha: '2026-11-21', turno: 'Mañana', consultorio: 'Consultorio Mañana 3', max: 25 },
+            { fecha: '2026-11-28', turno: 'Mañana', consultorio: 'Consultorio Mañana 1', max: 25 },
+            { fecha: '2026-11-28', turno: 'Mañana', consultorio: 'Consultorio Mañana 2', max: 25 }
+        ];
+
+        // Totales por fecha (solo para el desglose visual)
         const CUPOS_TOTALES = {
-            '2026-11-14': 100,  // 2M + 2T = 4 consultorios × 25
-            '2026-11-21': 75,   // 3M = 3 consultorios × 25
-            '2026-11-28': 50    // 2M = 2 consultorios × 25
+            '2026-11-14': 100,
+            '2026-11-21': 75,
+            '2026-11-28': 50
         };
-        const TOTAL_GLOBAL = 225;
 
         function sonHorasIguales(h1, h2) {
             if (!h1 || !h2) return false;
@@ -740,7 +749,14 @@
         }
 
         function cancelarYVolverInicio() { volverInicio(); }
-        function mostrarFormulario() { ocultarTodo(); document.getElementById('seccionFormulario').classList.add('activo'); }
+        function mostrarFormulario() { 
+            if (cuposDisponiblesGlobal === 0) {
+                alert("Los cupos están completos. No es posible registrarse.");
+                return;
+            }
+            ocultarTodo(); 
+            document.getElementById('seccionFormulario').classList.add('activo'); 
+        }
         function mostrarConsulta() { ocultarTodo(); document.getElementById('seccionConsulta').classList.add('activo'); }
 
         function validarSoloNumeros(input) { input.value = input.value.replace(/[^0-9]/g, ''); }
@@ -774,7 +790,7 @@
         }
 
         // ============================================================
-        // CONTADORES + CELEBRACIÓN CUANDO TOTAL = 0
+        // CONTADORES: suma de cupos disponibles de consultorios con cupo
         // ============================================================
         async function actualizarContadores() {
             const { data, error } = await _supabase.rpc('contar_cupos');
@@ -783,53 +799,62 @@
                 return; 
             }
 
-            const porFecha = {};
-            let totalOcupados = 0;
             cuposPorConsultorioCache = {};
-
             (data || []).forEach(r => {
                 const f = String(r.fecha).trim();
                 const c = r.consultorio;
-                const o = Number(r.ocupados);
-                if (!porFecha[f]) porFecha[f] = 0;
-                porFecha[f] += o;
-                totalOcupados += o;
-                cuposPorConsultorioCache[`${f}|${c}`] = o;
+                cuposPorConsultorioCache[`${f}|${c}`] = Number(r.ocupados);
             });
 
-            let disponiblesGlobal = TOTAL_GLOBAL - totalOcupados;
-            if (disponiblesGlobal < 0) disponiblesGlobal = 0;
+            // Calcular cupos disponibles por consultorio (máximo 25, mínimo 0)
+            let totalDisponibles = 0;
+            const porFecha = {};
+
+            CONFIG_CONSULTORIOS.forEach(cfg => {
+                const ocupados = cuposPorConsultorioCache[`${cfg.fecha}|${cfg.consultorio}`] || 0;
+                const disponibles = Math.max(0, cfg.max - ocupados);
+                totalDisponibles += disponibles;
+                if (!porFecha[cfg.fecha]) porFecha[cfg.fecha] = 0;
+                porFecha[cfg.fecha] += disponibles;
+            });
+
+            cuposDisponiblesGlobal = totalDisponibles;
 
             const contadorEl = document.getElementById('contadorGlobal');
             const textoEl = document.getElementById('textoCuposGlobal');
-            contadorEl.textContent = disponiblesGlobal;
-            
-            if (disponiblesGlobal <= 20 && disponiblesGlobal > 0) {
-                contadorEl.classList.add('pocos-cupos');
-                textoEl.textContent = "¡Últimos cupones disponibles!";
-            } else if (disponiblesGlobal === 0) {
+            const btnRegistrarme = document.getElementById('btnRegistrarme');
+            contadorEl.textContent = totalDisponibles;
+
+            if (totalDisponibles === 0) {
                 contadorEl.classList.add('pocos-cupos');
                 textoEl.textContent = "¡Cupos completos!";
+                if (btnRegistrarme) btnRegistrarme.style.display = 'none';
                 if (!celebracionMostrada) {
                     celebrarCuposLlenos();
                     celebracionMostrada = true;
                 }
+            } else if (totalDisponibles <= 20) {
+                contadorEl.classList.add('pocos-cupos');
+                textoEl.textContent = "¡Últimos cupones disponibles!";
+                if (btnRegistrarme) btnRegistrarme.style.display = '';
+                celebracionMostrada = false;
             } else {
                 contadorEl.classList.remove('pocos-cupos');
                 textoEl.textContent = "Cupones disponibles para este evento";
+                if (btnRegistrarme) btnRegistrarme.style.display = '';
+                celebracionMostrada = false;
             }
 
+            // Desglose por fecha
             const desgloseEl = document.getElementById('desgloseFechas');
             desgloseEl.innerHTML = '';
 
             for (const [fecha, max] of Object.entries(CUPOS_TOTALES)) {
-                const ocupadosFecha = porFecha[fecha] || 0;
-                let disponiblesFecha = max - ocupadosFecha;
-                if (disponiblesFecha < 0) disponiblesFecha = 0;
-
+                const disponiblesFecha = porFecha[fecha] || 0;
+                const ocupadosFecha = max - disponiblesFecha;
                 const porcentaje = (ocupadosFecha / max) * 100;
-                const estaLleno = ocupadosFecha >= max;
-                
+                const estaLleno = disponiblesFecha <= 0;
+
                 const fechaFormateada = fecha.split('-').reverse().join('/');
                 const hospitalCorto = LUGARES[fecha] ? LUGARES[fecha].corto : '';
 
@@ -855,7 +880,6 @@
             const modal = document.getElementById('modalLleno');
             modal.classList.add('activo');
 
-            // Explosión de luces (confeti) desde varios puntos
             const duracion = 4000;
             const fin = Date.now() + duracion;
 
@@ -945,17 +969,17 @@
 
             if (!fecha || !turno) return;
 
-            // Refrescar caché de cupos para mostrar llenos
             await actualizarContadores();
 
             const consultorios = (CONSULTORIOS_POR_FECHA[fecha] || {})[turno] || [];
             consultorios.forEach(c => {
                 const ocupados = cuposPorConsultorioCache[`${fecha}|${c}`] || 0;
-                const estaLleno = ocupados >= CUPOS_POR_CONSULTORIO;
+                const disponibles = Math.max(0, 25 - ocupados);
+                const estaLleno = disponibles === 0;
 
                 const option = document.createElement('option');
                 option.value = c;
-                option.textContent = estaLleno ? `${c} — LLENO` : `${c} (${CUPOS_POR_CONSULTORIO - ocupados} cupos)`;
+                option.textContent = estaLleno ? `${c} — LLENO` : `${c} (${disponibles} cupos)`;
                 if (estaLleno) {
                     option.disabled = true;
                     option.style.color = '#DC2626';
@@ -973,9 +997,8 @@
 
             if (!fecha || !turno || !consultorio) return;
 
-            // Si el consultorio está lleno, avisar
             const ocupadosConsultorio = cuposPorConsultorioCache[`${fecha}|${consultorio}`] || 0;
-            if (ocupadosConsultorio >= CUPOS_POR_CONSULTORIO) {
+            if (ocupadosConsultorio >= 25) {
                 contenedor.innerHTML = '';
                 bannerLleno.style.display = 'block';
                 bannerLleno.textContent = `⚠️ ${consultorio} está lleno. Por favor seleccione otro consultorio.`;
@@ -1058,6 +1081,11 @@
         document.getElementById('formCampana').addEventListener('submit', async (e) => {
             e.preventDefault();
             
+            if (cuposDisponiblesGlobal === 0) {
+                alert("Los cupos están completos. No es posible registrarse.");
+                return;
+            }
+
             const dniVal = document.getElementById('num_doc').value.trim();
             if (dniVal.length !== 8) {
                 alert("El DNI debe tener exactamente 8 números.");
