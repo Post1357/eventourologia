@@ -6,6 +6,7 @@
     <meta name="robots" content="noindex">
     <title>Inscripción Noviembre Azul 2026 - DIRSAL PNP</title>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
     
     <style>
@@ -50,7 +51,6 @@
         .header-institucional h1 { font-family: 'Montserrat', sans-serif; font-size: 20px; font-weight: 700; text-transform: uppercase; margin-bottom: 6px; }
         .header-institucional p { font-size: 13px; color: var(--dorado); font-weight: 500; text-transform: uppercase; letter-spacing: 1px; }
 
-        /* BANNER SOLO VARONES 40+ */
         .banner-varones {
             background: linear-gradient(135deg, #1E40AF 0%, #3B82F6 100%);
             color: white;
@@ -95,6 +95,64 @@
         .desglose-item.lleno .barra-progreso { background-color: var(--verde-barra); }
         .desglose-item.lleno .desglose-num { color: var(--verde-barra); }
         .desglose-item.lleno { border-color: var(--verde-barra); background-color: #F0FDF4; }
+
+        /* MODAL DE CUPOS LLENOS */
+        .modal-lleno-fondo {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.75);
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(6px);
+            animation: fadeIn 0.4s ease;
+        }
+        .modal-lleno-fondo.activo { display: flex; }
+        .modal-lleno-contenido {
+            background: white;
+            padding: 40px 30px;
+            border-radius: 16px;
+            max-width: 480px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.3);
+            border-top: 6px solid var(--dorado);
+            animation: scaleIn 0.5s ease;
+        }
+        .modal-lleno-contenido .icono-celebracion {
+            font-size: 64px;
+            margin-bottom: 15px;
+            animation: bounce 1s infinite;
+        }
+        .modal-lleno-contenido h2 {
+            font-family: 'Montserrat', sans-serif;
+            color: var(--verde-medio);
+            font-size: 24px;
+            margin-bottom: 15px;
+            font-weight: 800;
+        }
+        .modal-lleno-contenido p {
+            color: var(--texto-gris);
+            font-size: 15px;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+        .modal-lleno-contenido .btn-cerrar-lleno {
+            background: var(--verde-medio);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: 'Montserrat', sans-serif;
+        }
+        .modal-lleno-contenido .btn-cerrar-lleno:hover { background: var(--verde-oscuro); }
+
+        @keyframes scaleIn { from { opacity: 0; transform: scale(0.7); } to { opacity: 1; transform: scale(1); } }
+        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
 
         .contenedor-principal {
             max-width: 900px; margin: 0 auto 30px auto; background-color: var(--blanco); border-radius: 8px; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08); overflow: hidden;
@@ -145,12 +203,10 @@
         .info-lugar h4 { color: #1E40AF; font-family: 'Montserrat', sans-serif; font-size: 14px; margin-bottom: 4px; }
         .info-lugar p { color: #1E3A8A; font-size: 13px; margin: 0; }
 
-        /* BANNER CONSULTORIO LLENO */
         .banner-lleno {
             display: none; background-color: #FEF2F2; border: 1px solid #FCA5A5; color: #991B1B; padding: 10px 14px; border-radius: 6px; font-size: 13px; font-weight: 700; margin-bottom: 12px; text-align: center;
         }
 
-        /* GRID DE HORARIOS */
         .grid-horarios { 
             display: grid; 
             grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); 
@@ -205,7 +261,6 @@
         .btn-accion { background-color: var(--verde-medio); color: white; padding: 12px 20px; border: none; border-radius: 6px; cursor: pointer; font-size: 14px; font-weight: 600; font-family: 'Montserrat', sans-serif; margin-top: 15px; transition: all 0.2s ease; }
         .btn-accion:hover { background-color: var(--verde-oscuro); }
 
-        /* TICKET COMPACTO MÓVIL */
         .contenedor-cita-movil {
             background-color: #F0FDF4;
             border: 2px solid #22C55E;
@@ -296,7 +351,6 @@
             font-weight: 600;
         }
 
-        /* ERROR EDAD */
         #errorEdad {
             color: #DC2626;
             font-size: 12px;
@@ -321,12 +375,21 @@
 </head>
 <body oncontextmenu="return false;">
 
+    <!-- MODAL CUPOS LLENOS -->
+    <div id="modalLleno" class="modal-lleno-fondo">
+        <div class="modal-lleno-contenido">
+            <div class="icono-celebracion">🎉✨🎊</div>
+            <h2>¡Cupos completos!</h2>
+            <p>Los cupos están completos. Le esperamos en su cita asignada para atenderlo con toda la amabilidad del mundo.</p>
+            <button class="btn-cerrar-lleno" onclick="cerrarModalLleno()">Entendido</button>
+        </div>
+    </div>
+
     <div class="header-institucional">
         <h1>DEPARTAMENTO DE UROLOGÍA DEL HN PNP LNS</h1>
         <p>Campaña Noviembre Azul 2026 · DIRSAL PNP</p>
     </div>
 
-    <!-- BANNER SOLO VARONES 40+ -->
     <div class="banner-varones">
         <span class="icono">♂️</span>Campaña exclusiva para varones de 40 años a más
         <small>Si no cumples con este requisito, no podrás completar tu inscripción.</small>
@@ -341,7 +404,6 @@
         
     <div class="contenedor-principal">
         
-        <!-- PANTALLA 1: BIENVENIDA -->
         <div id="pantallaBienvenida" class="pantalla-bienvenida activo">
             <h1>Bienvenido a la Campaña</h1>
             <p>Seleccione una opción. Si ya completó su registro, puede verificar los datos de su cita.</p>
@@ -361,7 +423,6 @@
             </div>
         </div>
 
-        <!-- PANTALLA 2: FORMULARIO -->
         <div id="seccionFormulario" class="contenido-form">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
                 <h1 class="titulo-form">Solicitud de Evaluación Médica</h1>
@@ -466,7 +527,7 @@
                         <select id="consultorio_eval" required onchange="cargarHorarios()">
                             <option value="" disabled selected>Seleccione el consultorio</option>
                         </select>
-                        <span class="campo-ayuda">Seleccione un consultorio para ver sus horarios disponibles.</span>
+                        <span class="campo-ayuda">Los consultorios llenos aparecen marcados. Solo puede elegir uno con cupo.</span>
                     </div>
                 </div>
 
@@ -499,7 +560,6 @@
             </form>
         </div>
 
-        <!-- PANTALLA 3: CONSULTA DE CITA -->
         <div id="seccionConsulta" class="contenido-form">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
                 <h1 class="titulo-form">Consultar mi Cita</h1>
@@ -526,7 +586,6 @@
             <div id="mensajeConsulta" style="margin-top: 15px; font-weight: 600; padding: 12px; border-radius: 6px; text-align: center; display: none; font-size: 13px;"></div>
         </div>
 
-        <!-- PANTALLA 4: RESULTADO / RESUMEN DE CITA -->
         <div id="resumenCita" class="contenido-form">
             <div class="contenedor-cita-movil">
                 <div class="encabezado-ticket">
@@ -599,6 +658,8 @@
         let horaSeleccionada = null;
         let dniDuplicado = false;
         let temporizadorRefresco = null;
+        let celebracionMostrada = false;
+        let cuposPorConsultorioCache = {}; // { 'fecha|turno|consultorio': {ocupados, max} }
 
         const LUGARES = {
             '2026-11-14': { nombre: 'Consultorios de Tópico de Urología HN PNP LNS (Hospital Histórico)', direccion: 'Av. Brasil Cdra. 26 s/n, Jesús María, Lima', corto: 'Tópico Urología HN PNP' },
@@ -611,24 +672,28 @@
             'Tarde': { inicio: 13 * 60, fin: 18 * 60 }
         };
 
+        // CONSULTORIOS: el 21/11 ahora tiene 3 en Mañana
         const CONSULTORIOS_POR_FECHA = {
             '2026-11-14': {
                 'Mañana': ['Consultorio Mañana 1', 'Consultorio Mañana 2'],
                 'Tarde': ['Consultorio Tarde 1', 'Consultorio Tarde 2']
             },
             '2026-11-21': {
-                'Mañana': ['Consultorio Mañana 1', 'Consultorio Mañana 2']
+                'Mañana': ['Consultorio Mañana 1', 'Consultorio Mañana 2', 'Consultorio Mañana 3']
             },
             '2026-11-28': {
                 'Mañana': ['Consultorio Mañana 1', 'Consultorio Mañana 2']
             }
         };
 
+        // CUPOS TOTALES (25 por consultorio)
+        const CUPOS_POR_CONSULTORIO = 25;
         const CUPOS_TOTALES = {
-            '2026-11-14': 100,
-            '2026-11-21': 50,
-            '2026-11-28': 50
+            '2026-11-14': 100,  // 2M + 2T = 4 consultorios × 25
+            '2026-11-21': 75,   // 3M = 3 consultorios × 25
+            '2026-11-28': 50    // 2M = 2 consultorios × 25
         };
+        const TOTAL_GLOBAL = 225;
 
         function sonHorasIguales(h1, h2) {
             if (!h1 || !h2) return false;
@@ -674,10 +739,7 @@
             actualizarContadores();
         }
 
-        function cancelarYVolverInicio() {
-            volverInicio();
-        }
-
+        function cancelarYVolverInicio() { volverInicio(); }
         function mostrarFormulario() { ocultarTodo(); document.getElementById('seccionFormulario').classList.add('activo'); }
         function mostrarConsulta() { ocultarTodo(); document.getElementById('seccionConsulta').classList.add('activo'); }
 
@@ -687,9 +749,6 @@
             if (input.value.length > 8) input.value = input.value.slice(0, 8);
         }
 
-        // ============================================================
-        // VALIDAR EDAD EN TIEMPO REAL
-        // ============================================================
         function validarEdad(input) {
             const valor = parseInt(input.value);
             const errorEl = document.getElementById('errorEdad');
@@ -715,7 +774,7 @@
         }
 
         // ============================================================
-        // CONTADORES
+        // CONTADORES + CELEBRACIÓN CUANDO TOTAL = 0
         // ============================================================
         async function actualizarContadores() {
             const { data, error } = await _supabase.rpc('contar_cupos');
@@ -726,24 +785,35 @@
 
             const porFecha = {};
             let totalOcupados = 0;
+            cuposPorConsultorioCache = {};
+
             (data || []).forEach(r => {
                 const f = String(r.fecha).trim();
+                const c = r.consultorio;
+                const o = Number(r.ocupados);
                 if (!porFecha[f]) porFecha[f] = 0;
-                porFecha[f] += Number(r.ocupados);
-                totalOcupados += Number(r.ocupados);
+                porFecha[f] += o;
+                totalOcupados += o;
+                cuposPorConsultorioCache[`${f}|${c}`] = o;
             });
 
-            const totalCupos = 200;
-            let disponiblesGlobal = totalCupos - totalOcupados;
+            let disponiblesGlobal = TOTAL_GLOBAL - totalOcupados;
             if (disponiblesGlobal < 0) disponiblesGlobal = 0;
 
             const contadorEl = document.getElementById('contadorGlobal');
             const textoEl = document.getElementById('textoCuposGlobal');
             contadorEl.textContent = disponiblesGlobal;
             
-            if (disponiblesGlobal <= 20) {
+            if (disponiblesGlobal <= 20 && disponiblesGlobal > 0) {
                 contadorEl.classList.add('pocos-cupos');
                 textoEl.textContent = "¡Últimos cupones disponibles!";
+            } else if (disponiblesGlobal === 0) {
+                contadorEl.classList.add('pocos-cupos');
+                textoEl.textContent = "¡Cupos completos!";
+                if (!celebracionMostrada) {
+                    celebrarCuposLlenos();
+                    celebracionMostrada = true;
+                }
             } else {
                 contadorEl.classList.remove('pocos-cupos');
                 textoEl.textContent = "Cupones disponibles para este evento";
@@ -781,12 +851,40 @@
             }
         }
 
+        function celebrarCuposLlenos() {
+            const modal = document.getElementById('modalLleno');
+            modal.classList.add('activo');
+
+            // Explosión de luces (confeti) desde varios puntos
+            const duracion = 4000;
+            const fin = Date.now() + duracion;
+
+            (function frame() {
+                confetti({
+                    particleCount: 6,
+                    angle: 60,
+                    spread: 55,
+                    origin: { x: 0, y: 0.7 },
+                    colors: ['#D4AF37', '#22C55E', '#3B82F6', '#F59E0B', '#EC4899']
+                });
+                confetti({
+                    particleCount: 6,
+                    angle: 120,
+                    spread: 55,
+                    origin: { x: 1, y: 0.7 },
+                    colors: ['#D4AF37', '#22C55E', '#3B82F6', '#F59E0B', '#EC4899']
+                });
+                if (Date.now() < fin) requestAnimationFrame(frame);
+            })();
+        }
+
+        function cerrarModalLleno() {
+            document.getElementById('modalLleno').classList.remove('activo');
+        }
+
         actualizarContadores();
         temporizadorRefresco = setInterval(actualizarContadores, 30000);
 
-        // ============================================================
-        // VALIDAR DNI (RPC)
-        // ============================================================
         async function validarDniExistente() {
             const numDoc = document.getElementById('num_doc').value.trim();
             const alerta = document.getElementById('alertaDni');
@@ -806,9 +904,6 @@
             }
         }
 
-        // ============================================================
-        // ACTUALIZAR TURNOS según fecha
-        // ============================================================
         function actualizarTurnosYConsultorios() {
             const fecha = document.getElementById('fecha_eval').value;
             const turnoSelect = document.getElementById('turno_eval');
@@ -838,10 +933,7 @@
             });
         }
 
-        // ============================================================
-        // ACTUALIZAR CONSULTORIOS según fecha y turno
-        // ============================================================
-        function actualizarConsultorios() {
+        async function actualizarConsultorios() {
             const fecha = document.getElementById('fecha_eval').value;
             const turno = document.getElementById('turno_eval').value;
             const consultorioSelect = document.getElementById('consultorio_eval');
@@ -853,18 +945,25 @@
 
             if (!fecha || !turno) return;
 
+            // Refrescar caché de cupos para mostrar llenos
+            await actualizarContadores();
+
             const consultorios = (CONSULTORIOS_POR_FECHA[fecha] || {})[turno] || [];
             consultorios.forEach(c => {
+                const ocupados = cuposPorConsultorioCache[`${fecha}|${c}`] || 0;
+                const estaLleno = ocupados >= CUPOS_POR_CONSULTORIO;
+
                 const option = document.createElement('option');
                 option.value = c;
-                option.textContent = c;
+                option.textContent = estaLleno ? `${c} — LLENO` : `${c} (${CUPOS_POR_CONSULTORIO - ocupados} cupos)`;
+                if (estaLleno) {
+                    option.disabled = true;
+                    option.style.color = '#DC2626';
+                }
                 consultorioSelect.appendChild(option);
             });
         }
 
-        // ============================================================
-        // CARGAR HORARIOS del consultorio elegido
-        // ============================================================
         async function cargarHorarios() {
             const fecha = document.getElementById('fecha_eval').value;
             const turno = document.getElementById('turno_eval').value;
@@ -873,6 +972,15 @@
             const bannerLleno = document.getElementById('bannerLleno');
 
             if (!fecha || !turno || !consultorio) return;
+
+            // Si el consultorio está lleno, avisar
+            const ocupadosConsultorio = cuposPorConsultorioCache[`${fecha}|${consultorio}`] || 0;
+            if (ocupadosConsultorio >= CUPOS_POR_CONSULTORIO) {
+                contenedor.innerHTML = '';
+                bannerLleno.style.display = 'block';
+                bannerLleno.textContent = `⚠️ ${consultorio} está lleno. Por favor seleccione otro consultorio.`;
+                return;
+            }
 
             contenedor.innerHTML = '<p style="grid-column: 1/-1; color: #666; font-size:13px;">Consultando disponibilidad...</p>';
             bannerLleno.style.display = 'none';
@@ -927,12 +1035,10 @@
 
             if (!hayDisponibles) {
                 bannerLleno.style.display = 'block';
+                bannerLleno.textContent = `⚠️ ${consultorio} está lleno. Por favor seleccione otro consultorio.`;
             }
         }
 
-        // ============================================================
-        // SELECCIONAR HORA (sin recargar, solo cambiar clases)
-        // ============================================================
         function seleccionarHora(horaStr, horaAmPm) {
             horaSeleccionada = horaStr;
             const botones = document.querySelectorAll('.btn-hora');
@@ -949,9 +1055,6 @@
             });
         }
 
-        // ============================================================
-        // SUBMIT
-        // ============================================================
         document.getElementById('formCampana').addEventListener('submit', async (e) => {
             e.preventDefault();
             
@@ -1021,9 +1124,6 @@
             }
         });
 
-        // ============================================================
-        // CONSULTAR CITA (RPC)
-        // ============================================================
         async function buscarCita() {
             const dni = document.getElementById('consulta_dni').value.trim();
             const telefono = document.getElementById('consulta_telefono').value.trim();
