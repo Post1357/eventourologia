@@ -9,7 +9,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
     
-    <!-- Bloqueo de inspección (cosmético, no seguridad real) -->
     <script>
         document.addEventListener('keydown', function(e) {
             if (e.key === 'F12' || e.keyCode === 123) { e.preventDefault(); return false; }
@@ -219,7 +218,6 @@
         .cerrar-modal { position: absolute; top: 15px; right: 20px; font-size: 24px; cursor: pointer; color: #999; font-weight: bold; }
         .cerrar-modal:hover { color: var(--rojo); }
 
-        /* Resumen de cupos por consultorio */
         .panel-resumen {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -257,7 +255,6 @@
 </head>
 <body oncontextmenu="return false;">
 
-    <!-- Pantalla de Login -->
     <div id="loginSection" class="login-box">
         <h2>Acceso Administrativo</h2>
         <p>Departamento de Urología · HN PNP LNS</p>
@@ -267,14 +264,12 @@
         <p id="loginError"></p>
     </div>
 
-    <!-- Panel de Administración -->
     <div id="panelSection" class="contenedor oculto">
         <div class="header-panel">
             <h1>Registros de la Campaña</h1>
             <button onclick="cerrarSesion()" style="background:#DC2626;">Cerrar Sesión</button>
         </div>
 
-        <!-- RESUMEN DE CUPOS POR CONSULTORIO -->
         <div class="panel-resumen" id="panelResumen"></div>
         
         <div class="filtros">
@@ -283,7 +278,6 @@
             <button onclick="generarReportePDF()" class="btn-pdf">📄 Reporte PDF</button>
             <button onclick="borrarTodo()" class="btn-peligro">🗑️ Borrar TODOS</button>
 
-            <!-- FILTROS -->
             <select id="filtroFecha" onchange="aplicarFiltros()">
                 <option value="">Todas las fechas</option>
                 <option value="2026-11-14">14/11/2026</option>
@@ -299,11 +293,11 @@
                 <option value="">Todos los consultorios</option>
                 <option value="Consultorio Mañana 1">Consultorio Mañana 1</option>
                 <option value="Consultorio Mañana 2">Consultorio Mañana 2</option>
+                <option value="Consultorio Mañana 3">Consultorio Mañana 3</option>
                 <option value="Consultorio Tarde 1">Consultorio Tarde 1</option>
                 <option value="Consultorio Tarde 2">Consultorio Tarde 2</option>
             </select>
 
-            <!-- BUSCADOR DNI -->
             <div class="buscador-dni">
                 <input type="text" id="buscarDni" placeholder="DNI (8 dígitos)..." maxlength="8" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
                 <button onclick="buscarPaciente()">🔍 Buscar</button>
@@ -335,7 +329,6 @@
         </div>
     </div>
 
-    <!-- Modal de Búsqueda -->
     <div id="modalBusqueda" class="modal-fondo">
         <div class="modal-contenido">
             <span class="cerrar-modal" onclick="cerrarModal()">&times;</span>
@@ -465,6 +458,7 @@
                 { fecha: '2026-11-14', turno: 'Tarde', consultorio: 'Consultorio Tarde 2', max: 25 },
                 { fecha: '2026-11-21', turno: 'Mañana', consultorio: 'Consultorio Mañana 1', max: 25 },
                 { fecha: '2026-11-21', turno: 'Mañana', consultorio: 'Consultorio Mañana 2', max: 25 },
+                { fecha: '2026-11-21', turno: 'Mañana', consultorio: 'Consultorio Mañana 3', max: 25 },
                 { fecha: '2026-11-28', turno: 'Mañana', consultorio: 'Consultorio Mañana 1', max: 25 },
                 { fecha: '2026-11-28', turno: 'Mañana', consultorio: 'Consultorio Mañana 2', max: 25 }
             ];
